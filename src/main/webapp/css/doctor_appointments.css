@@ -1,0 +1,360 @@
+*{
+    padding: 0;
+    margin:0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    margin:0;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    height: 18vh;
+    width:100vw;
+    position: fixed;
+    background: white;
+    box-shadow: 0 3px 12px 1px rgba(0,0,0,.13);
+    z-index: 99;
+}
+
+
+.upper-header {
+    display: flex;
+    flex-direction: row;
+    width:100vw;
+    height: 7vh;
+    background-color: #292929;
+}
+
+.lower-header {
+    display: flex;
+    flex-direction: row;
+    width:100vw;
+    height:100%
+}
+
+
+
+article {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:100vw;
+    margin-top:10vh;
+}
+
+.logo {
+    width:40vw;
+    padding-left: 7vw;
+    padding-top:1vh;
+}
+
+.language-contaier {
+    display: flex;
+    flex-direction: row;
+    margin-left:5vw;
+}
+
+.lang-submit {
+    background: none;
+    border:none;
+    color: #bababa;
+    font-weight: bold;
+    font-family: PTSansCaption-Bold,Helvetica,Arial,sans-serif;
+    font-size: 15px;
+    line-height: 1;
+    margin-right: 1vw;
+    margin-top:2px;
+}
+
+.lang-submit:hover {
+    cursor: pointer;
+}
+
+.nav-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left:1vw;
+    height:100%;
+}
+
+.nav-button {
+    border: none;
+    background: none;
+    height:100%;
+    font-weight: 500;
+    padding-right: 1vw;
+    color:#005fa9;
+    font-size: 14px;
+}
+
+.nav-button:hover {
+    cursor: pointer;
+    color:black;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10vw;
+    width:30vw;
+}
+
+
+input[type="text"], textarea {
+    margin: 1vw;
+    border: 1px solid #02abed;
+    width: 25vw;
+
+}
+
+input[type="text"], input[type="submit"] {
+    height: 6vh;
+}
+
+
+.schedule-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top:17vh;
+    background-image: url("../img/img1.jpg");
+    height: 30vh;
+    background-size: cover;
+    background-position-y: -10vh;
+}
+
+.new-app{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    height: 8vh;
+    margin-left: 10vw;
+
+}
+
+.new-app-text {
+    display: flex;
+    align-items: center;
+    background-color: #0d0c46;
+    color:white;
+    font-weight: bold;
+    height: 100%;
+    border-bottom-left-radius: 30px;
+    border-top-left-radius: 30px;
+    width: 15vw;
+    justify-content: center;
+    font-size: 16px;
+}
+
+#datetime{
+    height: 8vh;
+    padding: 5px;
+    font-size: 25px;
+    border:0;
+    border-top:1px solid #4eb5f0;
+    border-bottom:1px solid #4eb5f0;
+
+}
+
+#create-button {
+    border:0;
+    color:white;
+    font-weight: bold;
+    height: 100%;
+    border-bottom-right-radius: 30px;
+    border-top-right-radius: 30px;
+    width:10vw;
+    background-color: #4eb5f0;
+    font-size: 16px;
+}
+
+
+#create-button:hover {
+    cursor: pointer;
+    background-color: #ff8800;
+}
+
+.free-h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+}
+
+.free-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #292929;
+    height: auto;
+    width: 100vw;
+}
+
+.scroll-free {
+    width:80vw;
+}
+
+.slick-initialized .slick-slide {
+    display: flex;
+}
+
+.slick-slide {
+    height: auto;
+
+}
+
+.free-appointment-container {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    height: auto;
+    width: 80vw;
+}
+
+.free-appointment {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-left: 3vw;
+    margin-top :2vh;
+    height: 4vh;
+    flex: 0 0 35vw;
+    background-color:white;
+    font-weight: bold;
+}
+
+.free-appointment input[type = "submit"] {
+    border:none;
+    background-color: #ff8800;
+    height:100%;
+    width:100%;
+}
+
+.free-appointment form {
+    display: flex;
+    justify-content: flex-end;
+    width:60%;
+    margin-left: 5vw;
+}
+
+.cur-slide {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.date {
+    margin-left : 10vw;
+}
+
+
+
+
+
+
+
+.busy-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #292929;
+    height: auto;
+    width: 100vw;
+}
+
+.scroll-busy {
+    width: 80vw;
+    display: flex;
+    justify-content: center;
+}
+
+.busy-h1 {
+    display: flex;
+    justify-content: center;
+    margin:20px;
+}
+
+
+.slider-container span{
+    font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
+    font-size: 1.6rem;
+}
+
+.slider-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.busy-appointment-container {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    height: auto;
+    width: 80vw;
+}
+
+.busy-appointment {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: "Roboto", "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
+    font-size: 1.1rem;
+    width: 400px;
+    height: auto;
+    margin: 15px;
+}
+
+.busy-ticket-info {
+    background-color: #ff8800;
+    width: 100%;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 2px;
+    border-bottom: 2px solid #ff8800;
+}
+
+.busy-ticket-client {
+    border-bottom: 2px solid black;
+    padding: 10px;
+}
+
+.description {
+    padding: 10px;
+}
+
+.ticket-time {
+    align-self: start;
+    padding: 10px;
+    background-color: white;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 2px;
+}
+
+.slick-initialized .slick-slide {
+    justify-content: center;
+}
+
+
+.day-con{
+    color:white;
+    margin-left: 10vw;
+}
