@@ -132,12 +132,20 @@ let EditButton;
 
 function setLocale(locale) {
     if(locale === "ru_RU") {
-        deleteButton = "Удалить";
-        EditButton = "Изменить";
+        deleteButton = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
+        EditButton = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
         console.log(deleteButton + EditButton);
     } else {
         deleteButton = "Delete";
         EditButton = "Edit";
     }
 
+}
+
+function initAlert(alertType, message, button) {
+    if(alertType.includes("successful")) {
+        Notiflix.Report.Success(".",message + "<br><br>", button);
+    } else {
+        Notiflix.Report.Failure(".", message + "<br><br>", button);
+    }
 }

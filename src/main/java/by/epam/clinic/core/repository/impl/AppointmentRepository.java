@@ -19,7 +19,10 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
     private static final String UPDATE_SQL =
             "UPDATE appointments SET doctor_id=?, customer_id=?, date_time=?, purpose=? WHERE id=?";
 
-    @SuppressWarnings("Duplicates")
+    private static final String REMOVE_SQL =
+            "DELETE FROM appointments WHERE id=?";
+
+
     @Override
     public void add(Appointment item) throws RepositoryException {
         PreparedStatement preparedStatement = null;
@@ -51,7 +54,6 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
         }
     }
 
-    @SuppressWarnings("Duplicates")
     @Override
     public void update(Appointment item) throws RepositoryException {
         PreparedStatement preparedStatement = null;
@@ -77,6 +79,10 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
         } finally {
             close(preparedStatement);
         }
+    }
+
+    public int remove(long id) throws RepositoryException {
+        return super.remove(id,REMOVE_SQL);
     }
 
     @Override
@@ -107,4 +113,5 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
         }
         return result;
     }
+
 }

@@ -5,10 +5,55 @@
                  "http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          id="WebApp_ID" version="3.0">
   <display-name>Clinic</display-name>
+
+  <error-page>
+    <error-code>404</error-code>
+    <location>/jsp/error/404.jsp</location>
+  </error-page>
+
+  <error-page>
+    <error-code>500</error-code>
+    <location>/jsp/error/runtime.jsp</location>
+  </error-page>
+
+  <error-page>
+    <exception-type>java.lang.Exception</exception-type>
+    <location>/jsp/error/runtime.jsp</location>
+  </error-page>
+
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
+  <filter>
+    <filter-name>Encoding Filter</filter-name>
+    <filter-class>by.epam.clinic.filter.EncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  <filter>
+    <filter-name>Localization Filter</filter-name>
+    <filter-class>by.epam.clinic.filter.LocalizationFilter</filter-class>
+  </filter>
+  <filter>
+    <filter-name>Security Filter</filter-name>
+    <filter-class>by.epam.clinic.filter.ServletSecurityFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>Encoding Filter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Localization Filter</filter-name>
+    <url-pattern>/controller</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Security Filter</filter-name>
+    <url-pattern>/controller</url-pattern>
+  </filter-mapping>
 </web-app>

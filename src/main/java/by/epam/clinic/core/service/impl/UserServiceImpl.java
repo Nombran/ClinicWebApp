@@ -8,16 +8,24 @@ import by.epam.clinic.core.repository.impl.UserRepository;
 import by.epam.clinic.core.service.UserService;
 import by.epam.clinic.core.specification.impl.FindUserByDoctorIdSpeification;
 import by.epam.clinic.core.specification.impl.FindUserByLoginSpecification;
+import by.epam.clinic.util.TextEncryptor;
+import by.epam.clinic.util.TextEncryptorException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.List;
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
+    private static Logger logger = LogManager.getLogger();
+
 
     public Optional<User> login(String login, String password) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
             transactionManager.init();
-            FindUserByLoginSpecification specification = new FindUserByLoginSpecification(login, password);
+            String encryptedPassword = TextEncryptor.encrypt(password);
+            FindUserByLoginSpecification specification = new FindUserByLoginSpecification(login, encryptedPassword);
             UserRepository repository = new UserRepository();
             transactionManager.setConnectionToRepository(repository);
             List<User> queryResult = repository.query(specification);
@@ -27,15 +35,16 @@ public class UserServiceImpl implements UserService {
                 return Optional.empty();
             }
         } catch (TransactionManagerException e) {
-            e.printStackTrace();
             throw new ServiceException("Error in login",e);
         } catch (RepositoryException e) {
             throw new ServiceException("Repository error",e);
+        } catch (TextEncryptorException e) {
+            throw new ServiceException("Error in encrypting password" ,e);
         } finally {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                //log
+                logger.error("Error in releasing connection", e);
             }
         }
     }
@@ -63,7 +72,7 @@ public class UserServiceImpl implements UserService {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                //log
+                logger.error("Error in releasing connection", e);
             }
         }
     }

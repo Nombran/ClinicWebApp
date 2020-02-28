@@ -1,6 +1,7 @@
 *{
     padding: 0;
     margin:0;
+    font-family: 'Philosopher', sans-serif;
 }
 
 body {
@@ -216,4 +217,12 @@ input[type="text"], input[type="submit"] {
     content: "Selected file: ";
     font-style: normal;
     font-weight: normal;
+}
+
+.role-con {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin-left: 75vw;
 }

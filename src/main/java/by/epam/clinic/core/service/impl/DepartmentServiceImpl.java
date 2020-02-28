@@ -11,15 +11,19 @@ import by.epam.clinic.core.service.DepartmentService;
 import by.epam.clinic.core.specification.impl.FindAllDepartmentsSpecification;
 import by.epam.clinic.core.specification.impl.FindDepartmentByIdSpecification;
 import by.epam.clinic.util.ImageUploader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 public class DepartmentServiceImpl implements DepartmentService {
+    private static Logger logger = LogManager.getLogger();
+
     private static final String UPLOAD_DIR_PATH = "/img/departments";
 
-    public boolean createDepartment(String name, String description, String phone,
+    public void createDepartment(String name, String description, String phone,
                                     String servletContextPath, Part imageFile) throws ServiceException {
         String uploadFileDir = servletContextPath + UPLOAD_DIR_PATH;
         ImageUploader imageUploader = new ImageUploader(uploadFileDir);
@@ -36,13 +40,10 @@ public class DepartmentServiceImpl implements DepartmentService {
             try {
                 imageUploader.write(imageFile, fileName);
             } catch (IOException e) {
-                //log
                 transactionManager.rollbackTransaction();
-                return false;
+                throw new ServiceException("Error in uploading image" ,e);
             }
-            return true;
         } catch (TransactionManagerException e) {
-            //log
             throw new ServiceException("Transaction manager error", e);
         } catch (RepositoryException e) {
             throw new ServiceException("Repository error", e);
@@ -50,7 +51,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                //log
+                logger.error("Error in releasing connection", e);
             }
         }
     }
@@ -64,7 +65,6 @@ public class DepartmentServiceImpl implements DepartmentService {
             FindAllDepartmentsSpecification specification = new FindAllDepartmentsSpecification();
             return departmentRepository.query(specification);
         } catch (TransactionManagerException e) {
-            //log
             throw new ServiceException("Transaction manager error", e);
         } catch (RepositoryException e) {
             throw new ServiceException("Repository error", e);
@@ -72,7 +72,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                //log
+                logger.error("Error in releasing connection", e);
             }
         }
     }
@@ -83,7 +83,6 @@ public class DepartmentServiceImpl implements DepartmentService {
             transactionManager.init();
             DepartmentRepository repository = new DepartmentRepository();
             transactionManager.setConnectionToRepository(repository);
-            ;
             repository.remove(id);
         } catch (TransactionManagerException e) {
             throw new ServiceException("Transaction manager error", e);
@@ -93,7 +92,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                //log
+                logger.error("Error in releasing connection", e);
             }
         }
     }
@@ -121,7 +120,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                //log
+                logger.error("Error in releasing connection", e);
             }
         }
     }
@@ -150,8 +149,8 @@ public class DepartmentServiceImpl implements DepartmentService {
         } catch (IOException e) {
             try {
                 transactionManager.rollbackTransaction();
-            } catch (TransactionManagerException e1) {
-                //log
+            } catch (TransactionManagerException ex) {
+                logger.error("Error in rollback of transaction", e);
             }
             throw new ServiceException("Upload image error", e);
         } catch (RepositoryException e) {
@@ -160,7 +159,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                //log
+                logger.error("Error in releasing connection", e);
             }
         }
     }

@@ -227,3 +227,11 @@ select {
     align-items: center;
     justify-content: center;
 }
+
+.role-con {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin-left: 75vw;
+}

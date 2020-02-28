@@ -43,11 +43,12 @@ function isFileImage(file) {
     return file && acceptedImageTypes.includes(file['type']);
 }
 
+
 function initAlert(alertType, message, button) {
-    if(alertType === "message.successful_creating") {
-        Notiflix.Report.Success("",message + "<br><br>", button);
+    if(alertType.includes("successful")) {
+        Notiflix.Report.Success(".",message + "<br><br>", button);
     } else {
-        Notiflix.Report.Failure("", message + "<br><br>", button);
+        Notiflix.Report.Failure(".", message + "<br><br>", button);
     }
 }
 

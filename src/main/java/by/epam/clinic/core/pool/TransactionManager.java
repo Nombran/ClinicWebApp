@@ -55,7 +55,9 @@ public class TransactionManager {
     public void releaseResources() throws TransactionManagerException {
         if(connection != null) {
             try {
-                connection.setAutoCommit(true);
+                if(!connection.getAutoCommit()) {
+                    connection.setAutoCommit(true);
+                }
                 ConnectionPool.INSTANCE.releaseConnection(connection);
                 connection = null;
             } catch (ConnectionPoolException e) {

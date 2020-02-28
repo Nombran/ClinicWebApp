@@ -18,19 +18,17 @@ public class CustomerRepository extends AbstractRepository<Customer> {
             "UPDATE customers SET name=?, surname=?, lastname=?, birthday=?," +
                     " phone=?, user_id=? WHERE id=?";
 
-    @SuppressWarnings("Duplicates")
+    private static final String REMOVE_SQL =
+            "DELETE FROM customers WHERE id=?";
+
+
     @Override
     public void add(Customer item) throws RepositoryException {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection
                     .prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1,item.getName());
-            preparedStatement.setString(2,item.getSurname());
-            preparedStatement.setString(3,item.getLastname());
-            preparedStatement.setLong(4,item.getBirthday().toEpochDay());
-            preparedStatement.setString(5,item.getPhone());
-            preparedStatement.setLong(6,item.getUserId());
+            fillStatement(preparedStatement, item);
             preparedStatement.execute();
             try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                 if(resultSet.next()) {
@@ -44,18 +42,12 @@ public class CustomerRepository extends AbstractRepository<Customer> {
         }
     }
 
-    @SuppressWarnings("Duplicates")
     @Override
     public void update(Customer item) throws RepositoryException {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(UPDATE_SQL);
-            preparedStatement.setString(1,item.getName());
-            preparedStatement.setString(2,item.getSurname());
-            preparedStatement.setString(3,item.getLastname());
-            preparedStatement.setLong(4,item.getBirthday().toEpochDay());
-            preparedStatement.setString(5,item.getPhone());
-            preparedStatement.setLong(6,item.getUserId());
+            fillStatement(preparedStatement, item);
             preparedStatement.setLong(7,item.getId());
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -63,6 +55,10 @@ public class CustomerRepository extends AbstractRepository<Customer> {
         } finally {
             close(preparedStatement);
         }
+    }
+
+    public int remove(long id) throws RepositoryException {
+        return super.remove(id,REMOVE_SQL);
     }
 
     @Override
@@ -95,4 +91,12 @@ public class CustomerRepository extends AbstractRepository<Customer> {
         return result;
     }
 
+    private void fillStatement(PreparedStatement statement, Customer item) throws SQLException {
+        statement.setString(1,item.getName());
+        statement.setString(2,item.getSurname());
+        statement.setString(3,item.getLastname());
+        statement.setLong(4,item.getBirthday().toEpochDay());
+        statement.setString(5,item.getPhone());
+        statement.setLong(6,item.getUserId());
+    }
 }

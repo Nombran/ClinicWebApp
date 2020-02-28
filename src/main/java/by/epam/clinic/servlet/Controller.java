@@ -63,7 +63,7 @@ public class Controller extends HttpServlet {
                 case REDIRECT:
                     response.sendRedirect(request.getContextPath() + page);
                     break;
-                case NONE: String serializedData = (String)request.getAttribute(AJAX_ATTR);
+                case AJAX: String serializedData = (String)request.getAttribute(AJAX_ATTR);
                     PrintWriter out = response.getWriter();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");

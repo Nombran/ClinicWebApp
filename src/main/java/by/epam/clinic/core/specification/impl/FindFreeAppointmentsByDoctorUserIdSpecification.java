@@ -1,6 +1,6 @@
 package by.epam.clinic.core.specification.impl;
 
-import by.epam.clinic.core.model.LocalDateTimeConverter;
+import by.epam.clinic.util.LocalDateTimeConverter;
 import by.epam.clinic.core.specification.Specification;
 
 import java.time.LocalDateTime;

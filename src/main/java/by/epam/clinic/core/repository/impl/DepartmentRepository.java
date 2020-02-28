@@ -18,7 +18,10 @@ public class DepartmentRepository extends AbstractRepository<Department> {
     private static final String UPDATE_SQL = "UPDATE departments " +
             "SET name=?, description=?, phone=?, image_path=? WHERE id=?";
 
-    @SuppressWarnings("Duplicates")
+    private static final String REMOVE_SQL =
+            "DELETE FROM departments WHERE id=?";
+
+
     @Override
     public void add(Department item) throws RepositoryException {
         PreparedStatement preparedStatement = null;
@@ -42,7 +45,7 @@ public class DepartmentRepository extends AbstractRepository<Department> {
         }
     }
 
-    @SuppressWarnings("Duplicates")
+
     @Override
     public void update(Department item) throws RepositoryException {
         PreparedStatement preparedStatement = null;
@@ -61,7 +64,11 @@ public class DepartmentRepository extends AbstractRepository<Department> {
         }
     }
 
-    @SuppressWarnings("Duplicates")
+    public int remove(long id) throws RepositoryException {
+        return super.remove(id,REMOVE_SQL);
+    }
+
+
     @Override
     public List<Department> query(Specification specification) throws RepositoryException {
         List<Department> result = new ArrayList<>();

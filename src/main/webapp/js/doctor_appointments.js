@@ -31,10 +31,10 @@ $(document).ready(() => {
 });
 
 function initAlert(alertType, message, button) {
-    if(alertType === "message.successful_creating") {
-        Notiflix.Report.Success("",message + "<br><br>", button);
+    if(alertType.includes("successful")) {
+        Notiflix.Report.Success(".",message + "<br><br>", button);
     } else {
-        Notiflix.Report.Failure("", message + "<br><br>", button);
+        Notiflix.Report.Failure(".", message + "<br><br>", button);
     }
 }
 
@@ -197,7 +197,7 @@ let deleteTicketButton;
 
 function setLocale(locale) {
     if(locale === "ru_RU") {
-        deleteTicketButton = "Удалить талон";
+        deleteTicketButton = "РЈРґР°Р»РёС‚СЊ С‚Р°Р»РѕРЅ";
     } else {
         deleteTicketButton = "Delete ticket";
     }

@@ -9,9 +9,11 @@ public class TransitionContent {
         this.page = page;
         this.transitionType = transitionType;
     }
-    public void setRedirect() {
-        transitionType = TransitionType.REDIRECT;
+
+    public TransitionContent(TransitionType transitionType) {
+        this.transitionType = transitionType;
     }
+
     public String getPage() {
         return page;
     }

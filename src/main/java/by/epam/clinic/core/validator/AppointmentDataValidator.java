@@ -34,4 +34,11 @@ public class AppointmentDataValidator {
             return false;
         }
     }
+
+    public static boolean isTimeValid(LocalDateTime dateTime) {
+        LocalTime time = dateTime.toLocalTime();
+        LocalDateTime futureTime = LocalDateTime.now();
+        futureTime = futureTime.minusHours(1);
+        return time.isAfter(START_OF_WORKING_DAY) && time.isBefore(END_OF_WORKING_DAY) && dateTime.isAfter(futureTime);
+    }
 }

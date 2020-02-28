@@ -27,14 +27,14 @@ fileInput.addEventListener( "change", function( event ) {
         fr.readAsDataURL(files[0]);
         picture = files[0];
         if(!isFileImage(picture)) {
-            Notiflix.Report.Failure("Upload image error!", "Not a image file"+"<br><br>", "Submit");
+            Notiflix.Report.Failure(HeaderText, textFooter+"<br><br>", "Submit");
         }
     }
 });
 
 $(".addDepartmentForm").submit(() => {
     if(!isFileImage(picture)) {
-        Notiflix.Report.Failure("Upload image error!", "Not a image file"+"<br><br>", "Submit");
+        Notiflix.Report.Failure(HeaderText, textFooter+"<br><br>", "Submit");
         return false;
     }
     return true;
@@ -47,9 +47,22 @@ function isFileImage(file) {
 }
 
 function initAlert(alertType, message, button) {
-    if(alertType === "message.successful_creating") {
-        Notiflix.Report.Success("",message + "<br><br>", button);
+    if(alertType.includes("successful")) {
+        Notiflix.Report.Success(".",message + "<br><br>", button);
     } else {
-       Notiflix.Report.Failure("", message + "<br><br>", button);
+        Notiflix.Report.Failure(".", message + "<br><br>", button);
+    }
+}
+
+let HeaderText;
+let textFooter;
+
+function setLocale(locale) {
+    if(locale === "ru_RU") {
+        HeaderText = "Ошибка при загрузке изображения";
+        textFooter = "Изображение не выбрано или выбран неверный файл!"
+    } else {
+        HeaderText = "Upload image error!";
+        textFooter = "Not a image file"
     }
 }

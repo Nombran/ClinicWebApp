@@ -17,7 +17,10 @@ public class UserRepository extends AbstractRepository<User> {
     private static final String UPDATE_SQL =
             "UPDATE users SET login=?, password=?, email=?, role=?, status=? WHERE id=?";
 
-    @SuppressWarnings("Duplicates")
+    private static final String REMOVE_SQL =
+            "DELETE FROM users WHERE id=?";
+
+
     @Override
     public void add(User item) throws RepositoryException {
         PreparedStatement preparedStatement = null;
@@ -42,7 +45,7 @@ public class UserRepository extends AbstractRepository<User> {
         }
     }
 
-    @SuppressWarnings("Duplicates")
+
     @Override
     public void update(User item) throws RepositoryException {
         PreparedStatement preparedStatement = null;
@@ -60,6 +63,10 @@ public class UserRepository extends AbstractRepository<User> {
         } finally {
             close(preparedStatement);
         }
+    }
+
+    public int remove(long id) throws RepositoryException {
+        return super.remove(id,REMOVE_SQL);
     }
 
     @Override

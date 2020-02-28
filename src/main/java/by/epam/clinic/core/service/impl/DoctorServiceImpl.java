@@ -8,8 +8,11 @@ import by.epam.clinic.core.pool.TransactionManager;
 import by.epam.clinic.core.pool.TransactionManagerException;
 import by.epam.clinic.core.repository.impl.*;
 import by.epam.clinic.core.service.DoctorService;
+import by.epam.clinic.core.specification.Specification;
 import by.epam.clinic.core.specification.impl.*;
 import by.epam.clinic.util.ImageUploader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.Part;
 import java.io.IOException;
@@ -18,9 +21,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class DoctorServiceImpl implements DoctorService {
+    private static Logger logger = LogManager.getLogger();
+
     private static final String UPLOAD_DIR_PATH = "/img/doctors";
 
-    public boolean createDoctor(User user, Doctor doctor, String servletContextPath, Part imageFile) throws ServiceException {
+    public void createDoctor(User user, Doctor doctor, String servletContextPath, Part imageFile) throws ServiceException {
         String uploadDir = servletContextPath + UPLOAD_DIR_PATH;
         ImageUploader uploader = new ImageUploader(uploadDir);
         TransactionManager transactionManager = new TransactionManager();
@@ -38,29 +43,19 @@ public class DoctorServiceImpl implements DoctorService {
             doctorRepository.add(doctor);
             try {
                 uploader.write(imageFile, imageFileName);
-                return true;
             } catch (IOException e) {
-                //log
                 transactionManager.rollbackTransaction();
-                return false;
+                throw new ServiceException("Upload image error", e);
             }
-        } catch (
-                TransactionManagerException e) {
-            //log
-            try {
-                transactionManager.rollbackTransaction();
-            } catch (TransactionManagerException e1) {
-                //log
-            }
+        } catch (TransactionManagerException e) {
             throw new ServiceException("Transaction manager error", e);
-        } catch (
-                RepositoryException e) {
+        } catch (RepositoryException e) {
             throw new ServiceException("Repository error", e);
         } finally {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                e.printStackTrace();
+                logger.error("Error in releasing connection", e);
             }
         }
 
@@ -76,7 +71,6 @@ public class DoctorServiceImpl implements DoctorService {
                     = new FindDoctorsByDepartmentIdSpecification(id);
             return repository.query(specification);
         } catch (TransactionManagerException e) {
-            //log
             throw new ServiceException("Transaction manager error", e);
         } catch (RepositoryException e) {
             throw new ServiceException("Repository error", e);
@@ -84,7 +78,7 @@ public class DoctorServiceImpl implements DoctorService {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                //log
+                logger.error("Error in releasing connection", e);
             }
         }
     }
@@ -106,7 +100,7 @@ public class DoctorServiceImpl implements DoctorService {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                //log
+                logger.error("Error in releasing connection", e);
             }
         }
     }
@@ -128,7 +122,7 @@ public class DoctorServiceImpl implements DoctorService {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                //log
+                logger.error("Error in releasing connection", e);
             }
         }
     }
@@ -150,18 +144,35 @@ public class DoctorServiceImpl implements DoctorService {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                //log
+                logger.error("Error in releasing connection", e);
             }
         }
     }
 
-    public void deleteDoctor(long id) throws ServiceException {
+    public boolean deleteDoctor(long id) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
             transactionManager.init();
-            DoctorRepository repository = new DoctorRepository();
-            transactionManager.setConnectionToRepository(repository);
-            repository.remove(id);
+            AppointmentRepository appointmentRepo = new AppointmentRepository();
+            DoctorRepository doctorRepo = new DoctorRepository();
+            UserRepository userRepo = new UserRepository();
+            transactionManager.setConnectionToRepository(appointmentRepo, doctorRepo,userRepo);
+            Specification specification = new FindActiveAppointmentsByDoctorIdSpecification(id);
+            List<Appointment> appointments = appointmentRepo.query(specification);
+            if(appointments.size() == 0 ) {
+                Specification userSpec = new FindUserByDoctorIdSpeification(id);
+                List<User> users = userRepo.query(userSpec);
+                if(doctorRepo.remove(id) != 0) {
+                    User user = users.get(0);
+                    long userId = user.getId();
+                    userRepo.remove(userId);
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
         } catch (TransactionManagerException e) {
             throw new ServiceException("Transaction manager error", e);
         } catch (RepositoryException e) {
@@ -170,7 +181,7 @@ public class DoctorServiceImpl implements DoctorService {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                //log
+                logger.error("Error in releasing connection", e);
             }
         }
     }
@@ -198,7 +209,7 @@ public class DoctorServiceImpl implements DoctorService {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                //log
+                logger.error("Error in releasing connection", e);
             }
         }
     }
@@ -230,7 +241,7 @@ public class DoctorServiceImpl implements DoctorService {
             try {
                 transactionManager.rollbackTransaction();
             } catch (TransactionManagerException e1) {
-                //log
+                logger.error("Error in rollback of transaction", e);
             }
             throw new ServiceException("Error in uploading image", e);
         } catch (RepositoryException e) {
@@ -239,7 +250,7 @@ public class DoctorServiceImpl implements DoctorService {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                //log
+                logger.error("Error in releasing connection", e);
             }
         }
     }

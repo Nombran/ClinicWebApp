@@ -1,6 +1,7 @@
 *{
     padding: 0;
     margin:0;
+    font-family: 'Philosopher', sans-serif;
 }
 
 body {
@@ -285,6 +286,14 @@ input[type="text"], input[type="submit"] {
 .logo2 {
     padding-left: 0;
     margin-left: 0;
+}
+
+.role-con {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin-left: 75vw;
 }
 
 /* If you don't want the footer to be responsive, remove these media queries */

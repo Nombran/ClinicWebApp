@@ -113,9 +113,17 @@ let editButton;
 
 function setLocale(locale) {
     if(locale === "ru_RU") {
-        editButton = "Изменить";
+        editButton = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
     } else {
         editButton = "Edit";
     }
 
+}
+
+function initAlert(alertType, message, button) {
+    if(alertType.includes("successful")) {
+        Notiflix.Report.Success(".",message + "<br><br>", button);
+    } else {
+        Notiflix.Report.Failure(".", message + "<br><br>", button);
+    }
 }

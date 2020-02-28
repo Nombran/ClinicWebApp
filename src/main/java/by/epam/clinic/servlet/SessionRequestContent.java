@@ -1,7 +1,5 @@
 package by.epam.clinic.servlet;
 
-import by.epam.clinic.core.model.UserRole;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -10,12 +8,8 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Locale;
 
 public class SessionRequestContent {
-    private final static String LANGUAGE_ATTR = "language";
-
-    private final static String USER_ROLE_ATTR = "userRole";
 
     private String servletContextPath;
     private HashMap<String, Object> requestAttributes;
@@ -54,8 +48,7 @@ public class SessionRequestContent {
             for(Part part :parts) {
                 requestParts.put(part.getName(),part);
             }
-        } catch (IOException | ServletException e) {
-            //log
+        } catch (IOException | ServletException ignored) {
         }
     }
 
@@ -69,11 +62,7 @@ public class SessionRequestContent {
                     session.setAttribute(attribute, sessionAttributes.get(attribute));
                 }
             } else {
-                    String language = (String)sessionAttributes.get(LANGUAGE_ATTR);
                     session.invalidate();
-                    session = request.getSession(true);
-                    session.setAttribute(LANGUAGE_ATTR, language);
-                    session.setAttribute(USER_ROLE_ATTR , UserRole.GUEST);
             }
     }
 

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DoctorRepository extends AbstractRepository<Doctor> {
+
     private static final String INSERT_SQL = "INSERT INTO doctors(name," +
             " surname, lastname, user_id, specialization, category, department_id," +
             " image_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -19,21 +20,18 @@ public class DoctorRepository extends AbstractRepository<Doctor> {
             "lastname=?, user_id=?, specialization=?, category=?, department_id=?, " +
             "image_path=? WHERE id=?";
 
-    @SuppressWarnings("Duplicates")
+    private static final String REMOVE_SQL =
+            "DELETE FROM doctors WHERE id=?";
+
+
+
     @Override
     public void add(Doctor item) throws RepositoryException {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection
                     .prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1,item.getName());
-            preparedStatement.setString(2,item.getSurname());
-            preparedStatement.setString(3,item.getLastname());
-            preparedStatement.setLong(4,item.getUserId());
-            preparedStatement.setString(5,item.getSpecialization());
-            preparedStatement.setString(6,item.getCategory());
-            preparedStatement.setLong(7,item.getDepartmentId());
-            preparedStatement.setString(8,item.getImagePath());
+            fillStatement(preparedStatement, item);
             preparedStatement.execute();
             try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                 if(resultSet.next()) {
@@ -47,20 +45,13 @@ public class DoctorRepository extends AbstractRepository<Doctor> {
         }
     }
 
-    @SuppressWarnings("Duplicates")
+
     @Override
     public void update(Doctor item) throws RepositoryException {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(UPDATE_SQL);
-            preparedStatement.setString(1,item.getName());
-            preparedStatement.setString(2,item.getSurname());
-            preparedStatement.setString(3,item.getLastname());
-            preparedStatement.setLong(4,item.getUserId());
-            preparedStatement.setString(5,item.getSpecialization());
-            preparedStatement.setString(6,item.getCategory());
-            preparedStatement.setLong(7,item.getDepartmentId());
-            preparedStatement.setString(8,item.getImagePath());
+            fillStatement(preparedStatement,item);
             preparedStatement.setLong(9,item.getId());
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -68,6 +59,10 @@ public class DoctorRepository extends AbstractRepository<Doctor> {
         } finally {
             close(preparedStatement);
         }
+    }
+
+    public int remove(long id) throws RepositoryException {
+        return super.remove(id,REMOVE_SQL);
     }
 
     @Override
@@ -98,5 +93,16 @@ public class DoctorRepository extends AbstractRepository<Doctor> {
             close(statement);
         }
         return result;
+    }
+
+    private void fillStatement(PreparedStatement statement, Doctor item) throws SQLException {
+        statement.setString(1,item.getName());
+        statement.setString(2,item.getSurname());
+        statement.setString(3,item.getLastname());
+        statement.setLong(4,item.getUserId());
+        statement.setString(5,item.getSpecialization());
+        statement.setString(6,item.getCategory());
+        statement.setLong(7,item.getDepartmentId());
+        statement.setString(8,item.getImagePath());
     }
 }

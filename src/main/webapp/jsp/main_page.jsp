@@ -6,8 +6,9 @@
 <%@ page isELIgnored="false" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Home</title>
     <link href="<c:url value="/css/main_menu.css"/>" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Philosopher&display=swap&subset=cyrillic" rel="stylesheet">
     <script src="<c:url value="/js/jquery-3.4.1.min.js"/>"></script>
     <script src="<c:url value="/js/notiflix-aio-1.9.1.min.js"/>"></script>
     <script src="https://kit.fontawesome.com/9d248a417b.js" crossorigin="anonymous"></script>
@@ -63,6 +64,15 @@
 
         errorAlert("${wrongAction}","" ,"<fmt:message key="title.submit_button" />")
     </script>
+</c:if>
+<script>
+    setLocale("${language}");
+</script>
+<c:if test="${result != null}">
+    <script>
+        initAlert("${result}", "<fmt:message key="${result}" />","<fmt:message key="title.submit_button" />")
+    </script>
+    <c:remove var="result" scope="session"/>
 </c:if>
 </body>
 </html>

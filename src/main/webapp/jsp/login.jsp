@@ -10,7 +10,7 @@
     <script src="<c:url value="/js/jquery-3.4.1.min.js"/>"></script>
     <script src="<c:url value="/js/notiflix-aio-1.9.1.min.js"/>"></script>
     <link href="https://fonts.googleapis.com/css?family=Philosopher&display=swap&subset=cyrillic" rel="stylesheet">
-    <title></title>
+    <title>Login</title>
 </head>
 <body>
 <div class="home-button-con">
@@ -76,15 +76,11 @@
         resultAlert("<fmt:message key="message.successful_registration" />","<fmt:message key="message.failed_registration" />","${registration_result}","<fmt:message key="${registration_result}" />","<fmt:message key="message.continue" />", "<fmt:message key="title.submit_button" />");
     </script>
 </c:if>
-<c:if test="${wrongAction != null}">
+<c:if test="${result != null}">
     <script>
-        errorAlert("<fmt:message key="message.invalid_command" />","" ,"<fmt:message key="title.submit_button" />")
+        initAlert("${result}", "<fmt:message key="${result}" />","<fmt:message key="title.submit_button" />")
     </script>
-</c:if>
-<c:if test="${login_status != null}">
-    <script>
-    errorAlert("<fmt:message key="${login_status}" />","" ,"<fmt:message key="title.submit_button" />")
-    </script>
+    <c:remove var="result" scope="session" />
 </c:if>
 </body>
 </html>

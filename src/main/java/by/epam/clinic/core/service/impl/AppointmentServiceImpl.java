@@ -11,17 +11,22 @@ import by.epam.clinic.core.repository.impl.RepositoryException;
 import by.epam.clinic.core.repository.impl.CustomerRepository;
 import by.epam.clinic.core.repository.impl.DoctorRepository;
 import by.epam.clinic.core.service.AppointmentService;
+import by.epam.clinic.core.specification.Specification;
 import by.epam.clinic.core.specification.impl.*;
+import by.epam.clinic.core.validator.AppointmentDataValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class AppointmentServiceImpl implements AppointmentService {
+    private static Logger logger = LogManager.getLogger();
 
     public boolean createAppointment(Appointment appointment, long userId) throws ServiceException {
         LocalDateTime dateTime = appointment.getDateTime();
         LocalDateTime now = LocalDateTime.now();
-        if(dateTime.minusHours(1).isBefore(now)) {
+        if(!AppointmentDataValidator.isTimeValid(dateTime)) {
             return false;
         }
         TransactionManager transactionManager = new TransactionManager();
@@ -36,7 +41,8 @@ public class AppointmentServiceImpl implements AppointmentService {
                 Doctor doctor = doctors.get(0);
                 appointment.setDoctorId(doctor.getId());
                 FindAppointmentByDateTimeSpecification specification =
-                        new FindAppointmentByDateTimeSpecification(appointment.getDateTime());
+                        new FindAppointmentByDateTimeSpecification(appointment.getDateTime(),
+                                doctor.getId());
                 List<Appointment> appointments = appointmentRepository.query(specification);
                 if (appointments.size() == 0) {
                   appointmentRepository.add(appointment);
@@ -45,14 +51,13 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
         } catch (TransactionManagerException e) {
             throw new ServiceException("Transaction manager error", e);
-            //log
         } catch (RepositoryException e) {
             throw new ServiceException("Repository error");
         } finally {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                //log
+                logger.error("Error in releasing connection", e);
             }
         }
         return false;
@@ -84,7 +89,6 @@ public class AppointmentServiceImpl implements AppointmentService {
             });
             return appointments;
         } catch (TransactionManagerException e) {
-            //log
             throw new ServiceException("Transaction manager error");
         } catch (RepositoryException e) {
             throw new ServiceException("Repository error");
@@ -92,7 +96,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                //log
+                logger.error("Error in releasing connection", e);
             }
         }
     }
@@ -107,15 +111,14 @@ public class AppointmentServiceImpl implements AppointmentService {
                     new FindFreeDoctorAppointmentsByDoctorIdSpecification(doctorId);
             return repository.query(specification);
         } catch (TransactionManagerException e) {
-            //log
             throw new ServiceException("Transaction manager error",e);
         } catch (RepositoryException e) {
             throw new ServiceException("Repository error",e);
         } finally {
             try {
                 transactionManager.releaseResources();
-            } catch (TransactionManagerException e1) {
-                //log
+            } catch (TransactionManagerException e) {
+                logger.error("Error in releasing connection", e);
             }
         }
     }
@@ -136,14 +139,13 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
         } catch (TransactionManagerException e) {
             throw new ServiceException("Transaction manager error");
-            //log
         } catch (RepositoryException e) {
             throw new ServiceException("Repository error");
         } finally {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                //log
+                logger.error("Error in releasing connection", e);
             }
         }
         return false;
@@ -156,7 +158,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             AppointmentRepository appointmentRepository = new AppointmentRepository();
             CustomerRepository customerRepository = new CustomerRepository();
             transactionManager.setConnectionToRepository(customerRepository, appointmentRepository);
-            FindCustomerByUserIdSpecification customerSpecification =
+            Specification customerSpecification =
                     new FindCustomerByUserIdSpecification(userId);
             List<Customer> customers = customerRepository.query(customerSpecification);
             Customer customer = customers.get(0);
@@ -179,7 +181,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                //log
+                logger.error("Error in releasing connection", e);
             }
         }
         return false;
@@ -222,7 +224,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             try {
                 transactionManager.releaseResources();
             } catch (TransactionManagerException e) {
-                //log
+                logger.error("Error in releasing connection", e);
             }
         }
     }

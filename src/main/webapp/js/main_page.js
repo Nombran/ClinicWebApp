@@ -19,3 +19,12 @@ document.getElementById('testVal').addEventListener('click', () => {
 function errorAlert(error,message,button) {
     Notiflix.Report.Failure(error, message+"<br><br>", button);
 }
+
+
+function initAlert(alertType, message, button) {
+    if(alertType.includes("successful")) {
+        Notiflix.Report.Success(".",message + "<br><br>", button);
+    } else {
+        Notiflix.Report.Failure(".", message + "<br><br>", button);
+    }
+}

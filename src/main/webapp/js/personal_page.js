@@ -8,9 +8,9 @@ function initData(apps,docs) {
 }
 
 function initAlert(alertType, message, button) {
-    if(alertType === "message.successful") {
-        Notiflix.Report.Success("",message + "<br><br>", button);
+    if(alertType.includes("successful")) {
+        Notiflix.Report.Success(".",message + "<br><br>", button);
     } else {
-        Notiflix.Report.Failure("", message + "<br><br>", button);
+        Notiflix.Report.Failure(".", message + "<br><br>", button);
     }
 }

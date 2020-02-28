@@ -1,5 +1,9 @@
 package by.epam.clinic.core.pool;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -10,6 +14,8 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 public enum ConnectionPool {
     INSTANCE;
+
+    private final Logger logger = LogManager.getLogger();
 
     private BlockingQueue<Connection> freeConnections;
     private Queue<Connection> givenAwayConnections;
@@ -25,8 +31,7 @@ public enum ConnectionPool {
                 ProxyConnection proxyConnection = new ProxyConnection(connection);
                 freeConnections.offer(proxyConnection);
             } catch (SQLException e) {
-                e.printStackTrace();
-                //log
+                logger.error("Error in getting connection", e);
             }
         }
     }
@@ -37,7 +42,7 @@ public enum ConnectionPool {
             connection = freeConnections.take();
             givenAwayConnections.offer(connection);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error("Error in taking connection from pool",e);
         }
         return connection;
     }
@@ -57,7 +62,7 @@ public enum ConnectionPool {
                 ProxyConnection connection = (ProxyConnection) freeConnections.take();
                 connection.reallyClose();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+               logger.error("Error in destroying connection pool",e);
             }
         }
         deregisterDrivers();
@@ -70,7 +75,7 @@ public enum ConnectionPool {
             try {
                 DriverManager.deregisterDriver(driver);
             } catch (SQLException e) {
-                e.printStackTrace();
+               logger.error("Error in deregister drivers process",e);
             }
         }
     }

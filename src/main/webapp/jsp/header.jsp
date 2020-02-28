@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="property.pagecontent"/>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/customTags.tld"%>
 <%@ page isELIgnored="false" %>
 <html>
 <head>
@@ -12,20 +13,17 @@
 <header>
     <div class="upper-header">
         <div class="language-contaier">
-            <c:if test="${current_page == '/jsp/main_page.jsp'}">
                 <form action="controller" method="get" class="local-form">
-                    <input type="hidden" name="command" value="change_localization">
-                    <input type="hidden" name="page" value="/jsp/main_page.jsp">
                     <input type="hidden" name="language" value="ru_RU">
                     <input id="testVal" class="lang-submit" type="submit" value="РУС">
                 </form>
-                <form action="" method="" class="local-form">
-                    <input type="hidden" name="command" value="change_localization">
-                    <input type="hidden" name="page" value="/jsp/main_page.jsp">
+                <form action="controller" method="get" class="local-form">
                     <input type="hidden" name="language" value="en_US">
                     <input class="lang-submit line" type="submit" value="ENG">
                 </form>
-            </c:if>
+        </div>
+        <div class="role-con">
+        <ctg:role role="${current_user.role}" />
         </div>
     </div>
     <div class="lower-header">
@@ -37,7 +35,7 @@
                 <input type="hidden" name="command" value="home_page">
                 <input class="nav-button" type="submit" value="<fmt:message key="label.button.home" />">
             </form>
-            <c:if test="${userRole == 'GUEST'}">
+            <c:if test="${userRole == 'GUEST' || userRole == null}">
                 <form class="nav-form" action="controller" method="post">
                     <input type="hidden" name="command" value="login_page">
                     <input class="nav-button" type="submit" value="<fmt:message key="label.button.login" />">

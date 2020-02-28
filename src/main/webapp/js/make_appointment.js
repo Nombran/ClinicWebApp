@@ -289,10 +289,10 @@ function initFreeBlock(freeApps) {
 }
 
 function initAlert(alertType, message, button) {
-    if(alertType === "message.successful") {
-        Notiflix.Report.Success("",message + "<br><br>", button);
+    if(alertType.includes("successful")) {
+        Notiflix.Report.Success(".",message + "<br><br>", button);
     } else {
-        Notiflix.Report.Failure("", message + "<br><br>", button);
+        Notiflix.Report.Failure(".", message + "<br><br>", button);
     }
 }
 
@@ -300,8 +300,9 @@ let makeAppointmentButton;
 
 function setLocale(locale) {
     if(locale === "ru_RU") {
-        makeAppointmentButton = "Записаться на приём";
+        makeAppointmentButton = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ";
     } else {
         makeAppointmentButton = "Make appointment";
     }
 }
+

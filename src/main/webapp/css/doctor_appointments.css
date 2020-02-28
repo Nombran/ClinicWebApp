@@ -1,6 +1,7 @@
 *{
     padding: 0;
     margin:0;
+    font-family: 'Philosopher', sans-serif;
 }
 
 body {
@@ -357,4 +358,12 @@ input[type="text"], input[type="submit"] {
 .day-con{
     color:white;
     margin-left: 10vw;
+}
+
+.role-con {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin-left: 75vw;
 }
