@@ -1,6 +1,5 @@
 package by.epam.clinic.core.pool;
 
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,8 +27,7 @@ public enum ConnectionPool {
         for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
             try {
                 Connection connection = ConnectionCreator.getConnection();
-                ProxyConnection proxyConnection = new ProxyConnection(connection);
-                freeConnections.offer(proxyConnection);
+                freeConnections.offer(connection);
             } catch (SQLException e) {
                 logger.error("Error in getting connection", e);
             }

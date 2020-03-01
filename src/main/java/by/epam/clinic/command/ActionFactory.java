@@ -16,7 +16,7 @@ public class ActionFactory {
 
     private static final String INVALID_COMMAND_PROPERTY = "message.invalid_command";
     /**
-     * Defines a command by its string representation that gets from request.
+     * Defines a command by its string representation from request.
      * But there must be a corresponding element in enum {@code CommandType}
      *
      * @param requestContent object that contain request, response and session information.

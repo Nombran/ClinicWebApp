@@ -12,8 +12,4 @@ public class MessageManager {
     public static String getProperty(String key) {
         return resourceBundle.getString(key);
     }
-
-    public static void changeResource(Locale locale) {
-        resourceBundle = ResourceBundle.getBundle(RESOURCE_BUNDLE, locale);
-    }
 }

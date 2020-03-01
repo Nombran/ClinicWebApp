@@ -33,7 +33,8 @@ import java.util.ResourceBundle;
         Properties properties = new Properties();
         resource.keySet().forEach(key -> properties.put(key,resource.getString(key)));
         String url = properties.getProperty(URL_PROPERTY);
-        return DriverManager.getConnection(url,properties);
+        Connection connection = DriverManager.getConnection(url, properties);
+        return new ProxyConnection(connection);
     }
 
 }

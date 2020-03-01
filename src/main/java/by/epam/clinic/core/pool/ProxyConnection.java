@@ -1,11 +1,17 @@
 package by.epam.clinic.core.pool;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
 public class ProxyConnection implements Connection {
+    private final static Logger logger = LogManager.getLogger();
+
     private Connection connection;
 
     ProxyConnection(Connection connection) {
@@ -53,11 +59,11 @@ public class ProxyConnection implements Connection {
     }
 
     @Override
-    public void close() throws SQLException {
+    public void close() {
         try {
             ConnectionPool.INSTANCE.releaseConnection(this);
         } catch (ConnectionPoolException e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, "Error in releasing connection");
         }
     }
 
@@ -65,7 +71,7 @@ public class ProxyConnection implements Connection {
         try {
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, "Error in releasing connection");
         }
     }
 

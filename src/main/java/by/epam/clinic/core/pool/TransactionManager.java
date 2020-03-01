@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class TransactionManager {
     private Connection connection;
 
-    public void init() throws TransactionManagerException { //init
+    public void init() throws TransactionManagerException {
         if(connection == null) {
             connection = ConnectionPool.INSTANCE.getConnection();
         } else {

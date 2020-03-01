@@ -25,7 +25,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     public boolean createAppointment(Appointment appointment, long userId) throws ServiceException {
         LocalDateTime dateTime = appointment.getDateTime();
-        LocalDateTime now = LocalDateTime.now();
         if(!AppointmentDataValidator.isTimeValid(dateTime)) {
             return false;
         }
@@ -151,7 +150,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         return false;
     }
 
-    public boolean makeAppointment(long userId, long appointmentId, String purpose) throws ServiceException {
+    public boolean makeAppointment(long userId, long appointmentId, String purpose)
+            throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
             transactionManager.init();
