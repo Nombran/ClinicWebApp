@@ -404,3 +404,8 @@ input[type="text"], input[type="submit"] {
     height: 100%;
     margin-left: 75vw;
 }
+
+.no-doc-apps {
+    margin-left:45vw;
+    color:white;
+}

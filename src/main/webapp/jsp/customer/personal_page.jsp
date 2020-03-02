@@ -37,6 +37,9 @@
         </c:forEach>
     </div>
     </c:forEach>
+    <c:if test="${appointments.size() == 0}">
+        <h4 class="no-apps"><fmt:message key="label.no_appointments" /></h4>
+    </c:if>
 </div>
 <script src="<c:url value="/js/personal_page.js "/>">
 </script>

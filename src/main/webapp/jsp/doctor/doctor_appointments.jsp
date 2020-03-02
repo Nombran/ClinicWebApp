@@ -29,11 +29,13 @@
 </form>
 <h1 class="free-h1"><fmt:message key="label.text.free_apps" /></h1>
 <div class="free-container">
+    <h3 class="empty-apps" style='color: white; margin-top: 2vh;display: none' ><fmt:message key="label.text_no_free_tickets" /></h3>
     <div class="scroll-free">
     </div>
 </div>
 <h1 class="busy-h1"><fmt:message key="label.text.busy_tickets" /> </h1>
 <div class="busy-container">
+    <h3 class="empty-apps2" style='color: white; margin-top: 2vh;display: none' ><fmt:message key="label.text.no_active_tickets" /></h3>
     <div class="scroll-busy">
     </div>
 </div>

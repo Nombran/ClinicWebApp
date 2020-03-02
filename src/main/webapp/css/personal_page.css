@@ -198,3 +198,9 @@ input[type="text"], input[type="submit"] {
     height: 100%;
     margin-left: 75vw;
 }
+
+
+.no-apps {
+    color:white;
+    margin-top: 10vh;
+}

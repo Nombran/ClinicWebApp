@@ -40,7 +40,7 @@ function initAlert(alertType, message, button) {
 
 function initFreeBlock(freeApps) {
     if(freeApps.length === 0 ) {
-        $('.scroll-free')[0].innerHTML = "<h3 style='color: white; margin-top: 2vh;'>Here will be your free tickets</h3>";
+        $(".empty-apps")[0].style.display = "flex";
     }
     let prevDateTime;
     let ticket = document.createElement('div');
@@ -116,7 +116,7 @@ function initActivetickets(appointments, customers) {
     appointments = JSON.parse(appointments);
     customers = JSON.parse(customers);
     if(appointments.length === 0 ) {
-        $('.scroll-busy')[0].innerHTML = "<h3 style='margin-top: 2vh;'>Here will be your active tickets</h3>";
+        $('.empty-apps2')[0].style.display = "flex";
     }
     let prevDateTime;
     let sliderCon = document.createElement('div');

@@ -168,6 +168,7 @@ function initDocBlocks(allDocs) {
 }
 
 $(".dep-close")[0].addEventListener('click', ()=> {
+    $(".no-doc-apps")[0].style.display = "none";
     $(".doc-choosed").toggle(false);
     $(".dep-choosed").toggle(false);
     $('.scroll-container')[0].innerHTML = "";
@@ -179,6 +180,7 @@ $(".dep-close")[0].addEventListener('click', ()=> {
 
 
 $(".doc-close")[0].addEventListener('click', () => {
+    $(".no-doc-apps")[0].style.display = "none";
     $(".doc-choosed").toggle(false);
     $('.scroll-container')[0].innerHTML = "";
     let url = "http://localhost:8087/clinic/controller?command=get_doctors_by_department&id="+departmentChoosedId;
@@ -215,6 +217,9 @@ function initFreeBlock(freeApps) {
     submitInput.className = "button-class";
     formCon.appendChild(submitInput);
     let active;
+    if(freeApps.length === 0 ){
+        $(".no-doc-apps")[0].style.display = "flex";
+    }
     for(let app of freeApps) {
         let dateTime = app.dateTime;
         let stringDate = dateTime.date.year+"-"+dateTime.date.month+"-"+dateTime.date.day;

@@ -37,8 +37,8 @@
 </div>
 <div class="result-container">
     <div class="choose-container">
+        <h4 class="no-doc-apps" style="display: none"><fmt:message key = "label.no_doctor_apps" /></h4>
         <div class="scroll-container">
-
         </div>
     </div>
 </div>
