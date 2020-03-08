@@ -1,6 +1,7 @@
 package by.epam.clinic.core.repository.impl;
 
 import by.epam.clinic.core.model.Appointment;
+import by.epam.clinic.core.model.AppointmentAttribute;
 import by.epam.clinic.core.repository.AbstractRepository;
 import by.epam.clinic.core.specification.Specification;
 
@@ -22,6 +23,7 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
     private static final String REMOVE_SQL =
             "DELETE FROM appointments WHERE id=?";
 
+    private static final String UPDATE_CONDITION = " AND customer_id IS NULL";
 
     @Override
     public void add(Appointment item) throws RepositoryException {
@@ -55,10 +57,14 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
     }
 
     @Override
-    public void update(Appointment item) throws RepositoryException {
+    public int update(Appointment item) throws RepositoryException {
         PreparedStatement preparedStatement = null;
+        String SQL_QUERY = UPDATE_SQL;
+        if(item.getCustomerId() != 0) {
+            SQL_QUERY = UPDATE_SQL + UPDATE_CONDITION;
+        }
         try {
-            preparedStatement = connection.prepareStatement(UPDATE_SQL);
+            preparedStatement = connection.prepareStatement(SQL_QUERY);
             preparedStatement.setLong(1,item.getDoctorId());
             long customerId = item.getCustomerId();
             if(customerId == 0) {
@@ -73,7 +79,7 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
             preparedStatement.setLong(3,milli);
             preparedStatement.setString(4,item.getPurpose());
             preparedStatement.setLong(5,item.getId());
-            preparedStatement.execute();
+            return preparedStatement.executeUpdate();
         } catch (SQLException e) {
            throw new RepositoryException("Error in updating appointment", e);
         } finally {
@@ -94,14 +100,14 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
             statement = connection.prepareStatement(sqlQuery);
             ResultSet resultSet = statement.executeQuery();
             while(resultSet.next()) {
-                long id = resultSet.getLong("id");
-                long doctorId = resultSet.getLong("doctor_id");
-                long customerId = resultSet.getLong("customer_id");
-                long milli = resultSet.getLong("date_time");
+                long id = resultSet.getLong(AppointmentAttribute.ID_ATTR);
+                long doctorId = resultSet.getLong(AppointmentAttribute.DOCTOR_ID_ATTR);
+                long customerId = resultSet.getLong(AppointmentAttribute.CUSTOMER_ID_ATTR);
+                long milli = resultSet.getLong(AppointmentAttribute.DATE_TIME_ATTR);
                 Instant instant = Instant.ofEpochMilli(milli);
                 ZonedDateTime zonedDateTime = instant.atZone(ZoneId.systemDefault());
                 LocalDateTime dateTime = zonedDateTime.toLocalDateTime();
-                String purpose = resultSet.getString("purpose");
+                String purpose = resultSet.getString(AppointmentAttribute.PURPOSE_ATTR);
                 Appointment appointment = new Appointment(doctorId,customerId,purpose,dateTime);
                 appointment.setId(id);
                 result.add(appointment);

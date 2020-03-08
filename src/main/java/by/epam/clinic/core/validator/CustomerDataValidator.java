@@ -8,22 +8,29 @@ public class CustomerDataValidator{
 
     private static final String PHONE_PATTERN = "\\+\\d{12}";
 
+    private static final LocalDate LOWER_BOUND_OF_TIME = LocalDate.of(1930,1,1);
+
+    private static final LocalDate UPPER_BOUND_OF_TIME = LocalDate.of(2010,1,1);
+
     public static boolean isDataValid(String name, String surname, String lastname,
                                       String birthday, String phone) {
         if(name != null && surname != null && lastname != null && birthday != null
         && phone != null) {
             try {
                 LocalDate birthdayDate = LocalDate.parse(birthday);
-                if(birthdayDate.isAfter(LocalDate.of(1930,1,1)) &&
-                        birthdayDate.isBefore(LocalDate.of(2010,1,1))) {
-                    return name.matches(NAME_PATTERN) && surname.matches(NAME_PATTERN) && lastname.matches(NAME_PATTERN)
+                if(birthdayDate.isAfter(LOWER_BOUND_OF_TIME) &&
+                        birthdayDate.isBefore(UPPER_BOUND_OF_TIME)) {
+                    return name.matches(NAME_PATTERN)
+                            && surname.matches(NAME_PATTERN)
+                            && lastname.matches(NAME_PATTERN)
                             && phone.matches(PHONE_PATTERN);
-                } else return false;
+                }
             } catch (DateTimeParseException exception) {
                 return false;
             }
-        } else {
-            return false;
         }
+        return false;
     }
+
+    private CustomerDataValidator() {}
 }

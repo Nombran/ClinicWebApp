@@ -61,7 +61,6 @@
 </script>
 <c:if test="${wrongAction != null}">
     <script>
-
         errorAlert("${wrongAction}","" ,"<fmt:message key="title.submit_button" />")
     </script>
 </c:if>

@@ -1,6 +1,7 @@
 package by.epam.clinic.core.repository.impl;
 
 import by.epam.clinic.core.model.Customer;
+import by.epam.clinic.core.model.CustomerAttribute;
 import by.epam.clinic.core.repository.AbstractRepository;
 import by.epam.clinic.core.specification.Specification;
 
@@ -36,20 +37,20 @@ public class CustomerRepository extends AbstractRepository<Customer> {
                 }
             }
         } catch (SQLException e) {
-            throw new RepositoryException("Error in query",e);
+            throw new RepositoryException("Error in creating customer",e);
         } finally {
             close(preparedStatement);
         }
     }
 
     @Override
-    public void update(Customer item) throws RepositoryException {
+    public int update(Customer item) throws RepositoryException {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(UPDATE_SQL);
             fillStatement(preparedStatement, item);
             preparedStatement.setLong(7,item.getId());
-            preparedStatement.execute();
+            return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RepositoryException("Error in updating item",e);
         } finally {
@@ -70,14 +71,14 @@ public class CustomerRepository extends AbstractRepository<Customer> {
             statement = connection.prepareStatement(sqlQuery);
             ResultSet resultSet = statement.executeQuery();
             while(resultSet.next()) {
-                long id = resultSet.getLong("id");
-                String name = resultSet.getString("name");
-                String surname = resultSet.getString("surname");
-                String lastname = resultSet.getString("lastname");
-                long birthdayFromDb = resultSet.getLong("birthday");
+                long id = resultSet.getLong(CustomerAttribute.ID_ATTR);
+                String name = resultSet.getString(CustomerAttribute.NAME_ATTR);
+                String surname = resultSet.getString(CustomerAttribute.SURNAME_ATTR);
+                String lastname = resultSet.getString(CustomerAttribute.LASTNAME_ATTR);
+                long birthdayFromDb = resultSet.getLong(CustomerAttribute.BIRTHDAY);
                 LocalDate birthday = LocalDate.ofEpochDay(birthdayFromDb);
-                String phone = resultSet.getString("phone");
-                long userId = resultSet.getLong("user_id");
+                String phone = resultSet.getString(CustomerAttribute.PHONE);
+                long userId = resultSet.getLong(CustomerAttribute.USER_ID);
                 Customer customer = new Customer(name,surname,lastname,birthday,phone);
                 customer.setUserId(userId);
                 customer.setId(id);

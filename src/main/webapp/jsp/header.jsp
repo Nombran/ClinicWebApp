@@ -13,13 +13,17 @@
 <header>
     <div class="upper-header">
         <div class="language-contaier">
+            <i class="fas fa-globe" style="color: white;
+    font-size: 15pt;
+    padding-top: 0.8vw;
+    margin-right: 1vw;"></i>
                 <form action="controller" method="get" class="local-form">
                     <input type="hidden" name="language" value="ru_RU">
                     <input id="testVal" class="lang-submit" type="submit" value="РУС">
                 </form>
                 <form action="controller" method="get" class="local-form">
                     <input type="hidden" name="language" value="en_US">
-                    <input class="lang-submit line" type="submit" value="ENG">
+                    <input  class="lang-submit line" type="submit" value="ENG">
                 </form>
         </div>
         <div class="role-con">

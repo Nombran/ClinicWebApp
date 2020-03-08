@@ -4,7 +4,7 @@ import org.apache.commons.io.FilenameUtils;
 public class DepartmentDataValidator {
     private static final String NAME_PATTERN = "[-а-яёА-ЯЁ]{4,30}\\s*[а-яёА-ЯЁ]{4,30}";
 
-    private static final String PHONE_PATTERN = "[\\+]\\d{12}";
+    private static final String PHONE_PATTERN = "[+]\\d{12}";
 
     private static final String JPG_EXTENSION = "jpg";
 
@@ -12,9 +12,7 @@ public class DepartmentDataValidator {
 
     private static final String JPEG_EXTENSION = "jpeg";
 
-    private static final int DESCRIPTION_MIN_SIZE = 30;
-
-    private static final int DESCRIPTION_MAX_SIZE = 500;
+    private static final String DESCRIPTION_PATTERN = "[-а-яА-Я0-9\\s,.?!]{50,250}";
 
     public static boolean isDataValid(String name, String description, String phone, String imageFileName) {
         if(name != null && description != null && phone != null && imageFileName != null) {
@@ -22,13 +20,12 @@ public class DepartmentDataValidator {
                 if(JPG_EXTENSION.equals(extension) || PNG_EXTENSION.equals(extension) ||
                 JPEG_EXTENSION.equals(extension)) {
                     return name.matches(NAME_PATTERN) && phone.matches(PHONE_PATTERN) &&
-                            description.length() > DESCRIPTION_MIN_SIZE && description.length() < DESCRIPTION_MAX_SIZE;
+                            description.matches(DESCRIPTION_PATTERN);
 
-                } else {
-                    return false;
                 }
-        } else {
-            return false;
         }
+        return false;
     }
+
+    private DepartmentDataValidator() {}
 }

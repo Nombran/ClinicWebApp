@@ -14,11 +14,13 @@ import by.epam.clinic.core.service.AppointmentService;
 import by.epam.clinic.core.specification.Specification;
 import by.epam.clinic.core.specification.impl.*;
 import by.epam.clinic.core.validator.AppointmentDataValidator;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AppointmentServiceImpl implements AppointmentService {
     private static Logger logger = LogManager.getLogger();
@@ -73,7 +75,8 @@ public class AppointmentServiceImpl implements AppointmentService {
             FindFreeAppointmentsByDoctorUserIdSpecification specification
                     = new FindFreeAppointmentsByDoctorUserIdSpecification(userId);
             List<Appointment> appointments = appointmentRepository.query(specification);
-            appointments.sort((appointment1, appointment2) -> {
+            appointments = appointments.stream()
+                    .sorted(((appointment1, appointment2) -> {
                 LocalDateTime dateTime1 = appointment1.getDateTime();
                 LocalDateTime dateTime2 = appointment2.getDateTime();
                 if (dateTime1.isBefore(dateTime2)) {
@@ -85,7 +88,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                         return 0;
                     }
                 }
-            });
+            })).collect(Collectors.toList());
             return appointments;
         } catch (TransactionManagerException e) {
             throw new ServiceException("Transaction manager error");
@@ -169,12 +172,12 @@ public class AppointmentServiceImpl implements AppointmentService {
                 Appointment appointment = appointments.get(0);
                 appointment.setCustomerId(customer.getId());
                 appointment.setPurpose(purpose);
-                appointmentRepository.update(appointment);
-                return true;
+                if(appointmentRepository.update(appointment) != 0) {
+                    return true;
+                }
             }
         } catch (TransactionManagerException e) {
             throw new ServiceException("Transaction manager error");
-            //log
         } catch (RepositoryException e) {
             throw new ServiceException("Repository error");
         } finally {
@@ -220,6 +223,46 @@ public class AppointmentServiceImpl implements AppointmentService {
             throw new ServiceException("Transaction manager error",e);
         } catch (RepositoryException e) {
             throw new ServiceException("Repository error",e);
+        } finally {
+            try {
+                transactionManager.releaseResources();
+            } catch (TransactionManagerException e) {
+                logger.error("Error in releasing connection", e);
+            }
+        }
+    }
+
+    public List[] findActiveAppointments(long userId) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            transactionManager.init();
+            CustomerRepository customerRepo = new CustomerRepository();
+            DoctorRepository doctorRepo = new DoctorRepository();
+            AppointmentRepository appointmentRepo = new AppointmentRepository();
+            transactionManager.setConnectionToRepository(customerRepo, doctorRepo, appointmentRepo);
+            FindCustomerByUserIdSpecification customerSpec =
+                    new FindCustomerByUserIdSpecification(userId);
+            List<Customer> customers = customerRepo.query(customerSpec);
+            if(customers.size() != 0) {
+                Customer customer = customers.get(0);
+                long customerId = customer.getId();
+                FindActiveAppointmentsByCustomerIdSpecification appointmentSpec
+                        = new FindActiveAppointmentsByCustomerIdSpecification(customerId);
+                List<Appointment> appointments = appointmentRepo.query(appointmentSpec);
+                FindDoctorsByCustomerIdSpecification doctorsSpec
+                        = new FindDoctorsByCustomerIdSpecification(customerId);
+                List<Doctor> doctors = doctorRepo.query(doctorsSpec);
+                List[] result = new List[2];
+                result[0] = appointments;
+                result[1] = doctors;
+                return result;
+            } else {
+                throw new ServiceException("Incorrect customer user id");
+            }
+        } catch (TransactionManagerException e) {
+            throw new ServiceException("Transaction manager error", e);
+        } catch (RepositoryException e) {
+            throw new ServiceException("Repository error" , e);
         } finally {
             try {
                 transactionManager.releaseResources();

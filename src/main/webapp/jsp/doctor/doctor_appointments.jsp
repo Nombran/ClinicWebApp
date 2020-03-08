@@ -23,7 +23,7 @@
     <div class="new-app">
         <span class="new-app-text"><fmt:message key="label.text.new_appointmet" /></span>
         <input type="hidden" name="command" value="add_appointment">
-        <input type="datetime-local" name="date_time" id="datetime">
+        <input type="datetime-local"  name="date_time" id="datetime">
         <input type="submit" value="<fmt:message key="label.button.create_ticket" />" id="create-button">
     </div>
 </form>

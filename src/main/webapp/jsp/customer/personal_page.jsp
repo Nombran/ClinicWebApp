@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<fmt:setLocale value="${language}" scope="session" />
+<fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="property.pagecontent"/>
 <%@ page isELIgnored="false" %>
 <html>
@@ -15,37 +15,43 @@
     <script src="https://kit.fontawesome.com/9d248a417b.js" crossorigin="anonymous"></script>
 </head>
 <body>
-<c:import url="/jsp/header.jsp" />
+<c:import url="/jsp/header.jsp"/>
 <form class="schedule-container">
 </form>
-<h1 class="free-h1"><fmt:message key="label.text.my_tickets" /></h1>
+<h1 class="free-h1"><fmt:message key="label.text.my_tickets"/></h1>
 <div class="active-appointments">
     <c:forEach var="appointment" items="${appointments}">
-    <div class="active-appointment">
-        <div class="full-date"><c:out value="${appointment.dateTime.toLocalDate()} ${appointment.dateTime.toLocalTime()}" /></div>
-        <c:forEach var="doctor" items="${doctors}">
-            <c:if test="${doctor.id == appointment.doctorId}">
-                <div class="doc-name"><c:out value="${doctor.surname} ${doctor.name} ${doctor.lastname}" /></div>
-                <div class="doc-specialization">${doctor.specialization}</div>
-                <div class="purpose">${appointment.purpose}</div>
-                <form method="post" action="controller">
-                    <input type="hidden" name="id" value="${appointment.id}">
-                    <input type="hidden" name="command" value="delete_ticket_reservation">
-                    <input type="submit" value="<fmt:message key="label.button.cancel_ticket" /> ">
-                </form>
-            </c:if>
-        </c:forEach>
-    </div>
+        <div class="active-appointment">
+            <div class="full-date"><c:out
+                    value="${appointment.dateTime.toLocalDate()} ${appointment.dateTime.toLocalTime()}"/></div>
+            <c:forEach var="doctor" items="${doctors}">
+                <c:if test="${doctor.id == appointment.doctorId}">
+                    <div class="row-block">
+                        <div class="ticket-content">
+                            <div class="doc-name"><c:out
+                                    value="${doctor.surname} ${doctor.name} ${doctor.lastname}"/></div>
+                            <div class="doc-specialization">${doctor.specialization}</div>
+                            <div class="purpose">${appointment.purpose}</div>
+                        </div>
+                        <form method="post" action="controller">
+                            <input type="hidden" name="id" value="${appointment.id}">
+                            <input type="hidden" name="command" value="delete_ticket_reservation">
+                            <input type="submit" value="<fmt:message key="label.button.cancel_ticket" /> ">
+                        </form>
+                    </div>
+                </c:if>
+            </c:forEach>
+        </div>
     </c:forEach>
     <c:if test="${appointments.size() == 0}">
-        <h4 class="no-apps"><fmt:message key="label.no_appointments" /></h4>
+        <h4 class="no-apps"><fmt:message key="label.no_appointments"/></h4>
     </c:if>
 </div>
 <script src="<c:url value="/js/personal_page.js "/>">
 </script>
 <c:if test="${result != null}">
     <script>
-        initAlert("${result}", "<fmt:message key="${result}" />","<fmt:message key="title.submit_button" />")
+        initAlert("${result}", "<fmt:message key="${result}" />", "<fmt:message key="title.submit_button" />")
     </script>
     <c:remove var="result" scope="session"/>
 </c:if>

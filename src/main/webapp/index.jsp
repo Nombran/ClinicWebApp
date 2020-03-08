@@ -2,5 +2,5 @@
 <html>
 <head><title>Index</title></head>
 <body>
-
+<jsp:forward page="jsp/main_page.jsp" />
 </body></html>

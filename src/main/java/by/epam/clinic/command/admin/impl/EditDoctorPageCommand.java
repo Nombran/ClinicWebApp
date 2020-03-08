@@ -67,9 +67,9 @@ public class EditDoctorPageCommand implements AdminCommand {
     public TransitionContent execute(SessionRequestContent requestContent) {
         String page = ConfigurationManager.getProperty(PAGE_PROPERTY);
         Gson gson = new Gson();
+        long id;
         if(requestContent.containsParameters(DoctorAttribute.ID_ATTR)) {
             String idAttribute = requestContent.getRequestParameter(DoctorAttribute.ID_ATTR);
-            long id;
             try {
                 id = Long.parseLong(idAttribute);
             } catch (NumberFormatException e) {

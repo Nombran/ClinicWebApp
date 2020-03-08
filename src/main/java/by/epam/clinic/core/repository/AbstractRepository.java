@@ -35,9 +35,10 @@ public abstract class AbstractRepository<T> {
      * Method updates data in database table.
      *
      * @param item represents entity to update.
+     * @return the number of updated rows.
      * @throws RepositoryException if database problem occurs.
      */
-    public abstract void update(T item) throws RepositoryException;
+    public abstract int update(T item) throws RepositoryException;
 
     /**
      * Method executes sql query.

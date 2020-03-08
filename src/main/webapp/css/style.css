@@ -306,3 +306,37 @@ footer a {
     height: 100%;
     margin-left: 75vw;
 }
+
+.language-contaier {
+    width: 20vw;
+    display: flex;
+    flex-direction: row;
+}
+.local-form {
+    background-color: #222222;
+    margin: 0;
+    padding-left: 5px;
+    padding-right: 0;
+}
+
+footer {
+    display: flex;
+    align-items: center;
+}
+
+#testVal, #testVal2 {
+    border-radius: 0;
+    background: none;
+    border: 0;
+    margin: 0;
+    padding-left: 1vw;
+    padding-top: 1vw;
+    padding-right: 0;
+}
+
+.fa-globe {
+    color: white;
+    font-size: 15pt;
+    padding-top: 0.8vw;
+    margin-left: 1vw;
+}

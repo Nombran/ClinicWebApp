@@ -1,6 +1,7 @@
 package by.epam.clinic.core.repository.impl;
 
 import by.epam.clinic.core.model.Doctor;
+import by.epam.clinic.core.model.DoctorAttribute;
 import by.epam.clinic.core.repository.AbstractRepository;
 import by.epam.clinic.core.specification.Specification;
 import java.sql.PreparedStatement;
@@ -35,7 +36,8 @@ public class DoctorRepository extends AbstractRepository<Doctor> {
             preparedStatement.execute();
             try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                 if(resultSet.next()) {
-                    item.setId(resultSet.getLong(1));
+                    long id = resultSet.getLong(1);
+                    item.setId(id);
                 }
             }
         } catch (SQLException e) {
@@ -47,13 +49,13 @@ public class DoctorRepository extends AbstractRepository<Doctor> {
 
 
     @Override
-    public void update(Doctor item) throws RepositoryException {
+    public int update(Doctor item) throws RepositoryException {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(UPDATE_SQL);
             fillStatement(preparedStatement,item);
             preparedStatement.setLong(9,item.getId());
-            preparedStatement.execute();
+            return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RepositoryException("Error in updating item",e);
         } finally {
@@ -74,15 +76,15 @@ public class DoctorRepository extends AbstractRepository<Doctor> {
             statement = connection.prepareStatement(sqlQuery);
             ResultSet resultSet = statement.executeQuery();
             while(resultSet.next()) {
-                long id = resultSet.getLong("id");
-                String name = resultSet.getString("name");
-                String lastname = resultSet.getString("lastname");
-                String surname = resultSet.getString("surname");
-                long userId = resultSet.getLong("user_id");
-                String specialization = resultSet.getString("specialization");
-                String category = resultSet.getString("category");
-                long departmentId = resultSet.getLong("department_id");
-                String imagePath = resultSet.getString("image_path");
+                long id = resultSet.getLong(DoctorAttribute.ID_ATTR);
+                String name = resultSet.getString(DoctorAttribute.NAME_ATTR);
+                String lastname = resultSet.getString(DoctorAttribute.LASTNAME_ATTR);
+                String surname = resultSet.getString(DoctorAttribute.SURNAME_ATTR);
+                long userId = resultSet.getLong(DoctorAttribute.USER_ID);
+                String specialization = resultSet.getString(DoctorAttribute.SPECIALIZATION_ATTR);
+                String category = resultSet.getString(DoctorAttribute.CATEGORY_ATTR);
+                long departmentId = resultSet.getLong(DoctorAttribute.DEPARTMENT_ID);
+                String imagePath = resultSet.getString(DoctorAttribute.IMAGE_PATH);
                 Doctor doctor = new Doctor(id, name, surname, lastname, specialization,
                         category, userId, departmentId, imagePath);
                 result.add(doctor);

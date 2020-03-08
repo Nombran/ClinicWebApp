@@ -177,7 +177,9 @@ input[type="text"], input[type="submit"] {
     border: none;
     background-color: rgb(0, 174, 255);
     width: 10vw;
-    margin-left: 22vw;
+    margin-left: 7vw;
+    margin-right: 1vw;
+    margin-top: 9vh;
 }
 
 .active-appointment input[type="submit"]:hover {
@@ -203,4 +205,21 @@ input[type="text"], input[type="submit"] {
 .no-apps {
     color:white;
     margin-top: 10vh;
+}
+
+.purpose {
+    min-height: 3vh;
+    max-width: 20vw;
+    color: crimson;
+    overflow: hidden;
+}
+
+.row-block {
+    display: flex;
+    flex-direction: row;
+}
+
+.ticket-content {
+    display: flex;
+    flex-direction: column;
 }

@@ -24,8 +24,8 @@
             <div class="account-data">
                 <h1><fmt:message key="label.text.account_data" /></h1>
                 <input type="hidden" name="command" value="edit_doctor">
-                <input type="text" name="login" pattern="[A-Za-z0-9]{6,}" required title="<fmt:message key="title.login" />" placeholder=<fmt:message key="label.login"/> />
-                <input type="password" name="password" pattern= "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"  required title="<fmt:message key="title.password" />" placeholder=<fmt:message key="label.password" /> />
+                <input type="text" name="login" pattern="[a-zA-Z][A-Za-z0-9]{7,15}" required title="<fmt:message key="title.login" />" placeholder=<fmt:message key="label.login"/> />
+                <input type="password" name="password" pattern= "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}"  required title="<fmt:message key="title.password" />" placeholder=<fmt:message key="label.password" /> />
                 <input type="email" name="email" required title="<fmt:message key="title.email" />" placeholder="Email" />
             </div>
             <div class="img-container">

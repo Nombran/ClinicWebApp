@@ -5,13 +5,16 @@ import by.epam.clinic.command.doctor.DoctorCommand;
 import by.epam.clinic.core.model.*;
 import by.epam.clinic.core.service.impl.AppointmentServiceImpl;
 import by.epam.clinic.core.service.impl.ServiceException;
+import by.epam.clinic.core.validator.AppointmentDataValidator;
 import by.epam.clinic.servlet.SessionRequestContent;
 import by.epam.clinic.servlet.TransitionContent;
 import by.epam.clinic.servlet.TransitionType;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 
 /**
  * One of the implementations of {@link DoctorCommand} interface.
@@ -31,6 +34,8 @@ public class AddAppointmentCommand implements DoctorCommand {
     private static final String FAILED_MESSAGE_PROPERTY = "message.failed_creating_ticket";
 
     private static final String NOT_ENOUGH_ATTRIBUTES = "message.failed_not_enough_attr";
+
+    private static final String INCORRECT_DATA_PROPERTY = "massage.failed_incorrect_data";
 
     private static final String CURRENT_USER_ATTR = "current_user";
 
@@ -55,7 +60,14 @@ public class AddAppointmentCommand implements DoctorCommand {
             User user = (User) requestContent.getSessionAttribute(CURRENT_USER_ATTR);
             long userId = user.getId();
             String dateTime = requestContent.getRequestParameter(AppointmentAttribute.DATE_TIME_ATTR);
-            LocalDateTime localDateTime = LocalDateTime.parse(dateTime);
+            LocalDateTime localDateTime;
+            try {
+                localDateTime = LocalDateTime.parse(dateTime);
+            } catch (DateTimeParseException e) {
+                logger.log(Level.ERROR, "Error in parsing date : " + dateTime,e);
+                requestContent.setSessionAttribute(RESULT_ATTR, INCORRECT_DATA_PROPERTY);
+                return new TransitionContent(PAGE_URL, TransitionType.REDIRECT);
+            }
             Appointment appointment = new Appointment();
             appointment.setDateTime(localDateTime);
             try {

@@ -20,15 +20,4 @@ public interface CustomerService {
      * @throws ServiceException if an error occurs while creating customer.
      */
     boolean createCustomer(User user, Customer customer) throws ServiceException;
-
-    /**
-     * Method defines logic of getting info about active user's appointments.
-     *
-     * @param userId represents primary key in users database table.
-     * @return the list [ ] with two elements, where the first is a list of
-     * active appointments, and the second is a list of doctors, contains
-     * with customer's active tickets.
-     * @throws ServiceException if an error occurs while getting appointments info.
-     */
-    List[] findActiveAppointments(long userId) throws ServiceException;
 }

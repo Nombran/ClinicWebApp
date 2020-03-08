@@ -10,6 +10,7 @@
     <script src="<c:url value="/js/jquery-3.4.1.min.js"/>"></script>
     <script src="<c:url value="/js/notiflix-aio-1.9.1.min.js"/>"></script>
     <link href="https://fonts.googleapis.com/css?family=Philosopher&display=swap&subset=cyrillic" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/9d248a417b.js" crossorigin="anonymous"></script>
     <title>Login</title>
 </head>
 <body>
@@ -24,8 +25,8 @@
         <form action="controller" method="post"  id="newAccountForm">
             <h2><fmt:message key="label.createAccount"/></h2>
             <input type="hidden" name="command" value="registration"/>
-            <input type="text" name="login" pattern="[A-Za-z0-9]{6,}" required title="<fmt:message key="title.login" />" placeholder=<fmt:message key="label.login"/> />
-            <input type="password" name="password" pattern= "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"  required title="<fmt:message key="title.password" />" placeholder=<fmt:message key="label.password"  /> />
+            <input type="text" name="login" pattern="[a-zA-Z][A-Za-z0-9]{7,15}" required title="<fmt:message key="title.login" />" placeholder=<fmt:message key="label.login"/> />
+            <input type="password" name="password" pattern= "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}"  required title="<fmt:message key="title.password" />" placeholder=<fmt:message key="label.password"  /> />
             <input type="text" name="name" pattern="[A-Za-zА-Яа-я]{2,20}" required title="<fmt:message key="title.name" />" placeholder=<fmt:message key="label.name" /> />
             <input type="text" name="surname" pattern="[A-Za-zА-Яа-я]{2,20}" required title="<fmt:message key="title.name" />" placeholder=<fmt:message key="label.surname" /> />
             <input type="text" name="lastname" pattern="[A-Za-zА-Яа-я]{2,20}" required title="<fmt:message key="title.name" />" placeholder=<fmt:message key="label.lastName" /> />
@@ -39,8 +40,8 @@
         <form action="controller" method="post" name="signInForm">
             <input type="hidden" name="command" value="login"/>
             <h1><fmt:message key="label.signIn" /></h1>
-            <input type="text" name="login" title="<fmt:message key="title.login" />" pattern="[A-Za-z0-9]{6,}" required placeholder=<fmt:message key="label.login" /> />
-            <input type="password" name="password" pattern= "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"  required title="<fmt:message key="title.password" />" placeholder=<fmt:message key="label.password" /> />
+            <input type="text" name="login" title="<fmt:message key="title.login" />" pattern="[a-zA-Z][A-Za-z0-9]{7,15}" required placeholder=<fmt:message key="label.login" /> />
+            <input type="password" name="password" pattern= "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}"  required title="<fmt:message key="title.password" />" placeholder=<fmt:message key="label.password" /> />
             <a href="#"></a>
             <button><fmt:message key="label.signIn" /></button>
         </form>
@@ -62,12 +63,17 @@
 </div>
 
 <footer>
-    <p>
-        Created with <i class="fa fa-heart"></i> by
-        <a target="_blank" href="">Beresten Atsiom</a>
-        - Read how I created this and how you can join the challenge
-        <a target="_blank" href="">here</a>.
-    </p>
+    <div class="language-contaier">
+        <i class="fas fa-globe"></i>
+        <form action="controller" method="get" class="local-form">
+            <input type="hidden" name="language" value="ru_RU">
+            <input id="testVal" class="lang-submit" type="submit" value="РУС">
+        </form>
+        <form action="controller" method="get" class="local-form">
+            <input type="hidden" name="language" value="en_US">
+            <input id="testVal2" class="lang-submit line" type="submit" value="ENG">
+        </form>
+    </div>
 </footer>
 <script src="<c:url value="/js/login.js"/>">
 </script>

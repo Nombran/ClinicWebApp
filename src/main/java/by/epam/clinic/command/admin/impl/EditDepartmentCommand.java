@@ -94,7 +94,7 @@ public class EditDepartmentCommand implements AdminCommand {
                     requestContent.setSessionAttribute(RESULT_PROPERTY, FAIL_PROPERTY);
                 }
             } else {
-                requestContent.setSessionAttribute(RESULT_PROPERTY, FAIL_PROPERTY);
+                requestContent.setSessionAttribute(RESULT_PROPERTY,INCORRECT_DATA_PROPERTY);
             }
         } else {
             page = IF_ERROR_PAGE_URL;

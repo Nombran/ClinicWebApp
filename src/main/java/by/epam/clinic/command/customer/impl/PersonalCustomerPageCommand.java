@@ -3,6 +3,7 @@ package by.epam.clinic.command.customer.impl;
 import by.epam.clinic.command.admin.AdminCommand;
 import by.epam.clinic.command.customer.CustomerCommand;
 import by.epam.clinic.core.model.User;
+import by.epam.clinic.core.service.impl.AppointmentServiceImpl;
 import by.epam.clinic.core.service.impl.CustomerServiceImpl;
 import by.epam.clinic.core.service.impl.ServiceException;
 import by.epam.clinic.manager.ConfigurationManager;
@@ -38,10 +39,10 @@ public class PersonalCustomerPageCommand implements CustomerCommand {
 
     private static final String SERVICE_ERROR_MESSAGE = "message.failed_db_error";
 
-    private CustomerServiceImpl customerServiceImpl;
+    private AppointmentServiceImpl appointmentService;
 
     public PersonalCustomerPageCommand() {
-        this.customerServiceImpl = new CustomerServiceImpl();
+        this.appointmentService = new AppointmentServiceImpl();
     }
 
     /**
@@ -59,7 +60,7 @@ public class PersonalCustomerPageCommand implements CustomerCommand {
         User user = (User)requestContent.getSessionAttribute(CURRENT_USER_ATTR);
         long userId = user.getId();
         try {
-            List[] appointmentsData = customerServiceImpl.findActiveAppointments(userId);
+            List[] appointmentsData = appointmentService.findActiveAppointments(userId);
             List appointments = appointmentsData[0];
             List doctors = appointmentsData[1];
             requestContent.setRequestAttribute(APPOINTMENTS_ATTR, appointments);

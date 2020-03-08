@@ -23,7 +23,7 @@
     <hr>
     <div class='_1'><fmt:message key="label.the_page" /> </div>
     <div class='_2'><fmt:message key="label.was_not_found" /> </div>
-    <a class='btn' href='controller?command=home_page'><fmt:message key="label.backtohome" /></a>
+    <a class='btn' href="/clinic${current_page_url}"><fmt:message key="label.backtohome" /></a>
 </div>
 </body>
 </html>

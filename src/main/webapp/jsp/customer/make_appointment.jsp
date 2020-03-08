@@ -32,7 +32,7 @@
         <i class="far fa-times-circle doc-close"></i>
     </div>
     <form id="purpose-input-form">
-    <input id="purpose-input" required type="text" name="purpose" placeholder="<fmt:message key="label.placeholder.purpose" /> ">
+    <input id="purpose-input" required type="text" pattern="/^([а-яА-Я0-9.,\s]{10,50})$/" name="purpose" placeholder="<fmt:message key="label.placeholder.purpose" /> " title="<fmt:message key="label.title.purpose" />" />
     </form>
 </div>
 <div class="result-container">

@@ -24,11 +24,10 @@ public class DoctorDataValidator {
                     JPEG_EXTENSION.equals(extension)) {
                 return name.matches(NAME_PATTERN) && surname.matches(NAME_PATTERN) && lastname.matches(NAME_PATTERN) &&
                         specialization.matches(SPECIALIZATION_PATTERN) && category.matches(CATEGORY_PATTERN);
-            } else {
-                return false;
             }
-        } else  {
-            return false;
         }
+        return false;
     }
+
+    private DoctorDataValidator() {}
 }

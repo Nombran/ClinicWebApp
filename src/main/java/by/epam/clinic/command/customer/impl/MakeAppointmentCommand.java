@@ -5,6 +5,7 @@ import by.epam.clinic.core.model.AppointmentAttribute;
 import by.epam.clinic.core.model.User;
 import by.epam.clinic.core.service.impl.AppointmentServiceImpl;
 import by.epam.clinic.core.service.impl.ServiceException;
+import by.epam.clinic.core.validator.AppointmentDataValidator;
 import by.epam.clinic.servlet.SessionRequestContent;
 import by.epam.clinic.servlet.TransitionContent;
 import by.epam.clinic.servlet.TransitionType;
@@ -64,6 +65,10 @@ public class MakeAppointmentCommand implements CustomerCommand {
             }
             User user = (User) requestContent.getSessionAttribute(CURRENT_USER_ATTR);
             long userId = user.getId();
+            if(!AppointmentDataValidator.isPurposeValid(purpose)) {
+                requestContent.setSessionAttribute(RESULT_ATTR,INCORRECT_DATA_PROPERTY);
+                return new TransitionContent(PAGE_URL, TransitionType.REDIRECT);
+            }
             try {
                 if (appointmentService.makeAppointment(userId, appointmentId, purpose)) {
                     requestContent.setSessionAttribute(RESULT_ATTR, SUCCESS_MESSAGE_PROPERTY);

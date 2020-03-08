@@ -40,7 +40,8 @@ import java.util.ResourceBundle;
             return new ProxyConnection(connection);
         } catch (MissingResourceException e) {
             logger.log(Level.FATAL, "Cannot find resource bundle with name "+ DB_PROPERTIES_PATH, e);
-            throw new ConnectionProviderException("Cannot find resource bundle with name " + DB_PROPERTIES_PATH,e);
+            throw new ConnectionProviderException("Cannot find resource bundle with name "
+                    + DB_PROPERTIES_PATH,e);
         }
     }
 

@@ -27,6 +27,8 @@ public class AddDepartmentCommand implements AdminCommand {
 
     private static final String SUCCESS_MESSAGE_PROPERTY = "message.successful_creating_dep";
 
+    private static final String INCORRECT_DATA_PROPERTY = "massage.failed_incorrect_data";
+
     private static final String FAILED_MESSAGE_PROPERTY = "message.failed_creating_dep";
 
     private static final String NOT_ENOUGH_ATTRIBUTES = "message.failed_not_enough_attr";
@@ -64,6 +66,8 @@ public class AddDepartmentCommand implements AdminCommand {
                     logger.error(e);
                     requestContent.setSessionAttribute(RESULT_ATTR, FAILED_MESSAGE_PROPERTY);
                 }
+            } else {
+                requestContent.setSessionAttribute(RESULT_ATTR, INCORRECT_DATA_PROPERTY);
             }
         } else {
             requestContent.setSessionAttribute(RESULT_ATTR, NOT_ENOUGH_ATTRIBUTES);

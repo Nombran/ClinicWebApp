@@ -24,7 +24,7 @@
                 <h1><fmt:message key="label.text.edit_dep" /></h1>
                 <input type="hidden" name="command" value="edit_department">
                 <input type="text" name="name" required placeholder="<fmt:message key="label.placeholder.dep_name" /> " pattern="[-а-яёА-ЯЁ]{4,30}\s*[а-яёА-ЯЁ]{4,30}" title="<fmt:message key = "label.title.dep_name" />" >
-                <textarea name="description" minlength="30" maxlength="500" rows="15" placeholder="<fmt:message key="label.placeholder.dep_descrition" />"></textarea>
+                <textarea name="description" title="<fmt:message key="label.title.dep_description" /> " minlength="50" maxlength="250" rows="15" placeholder="<fmt:message key="label.placeholder.dep_descrition" />"></textarea>
                 <input type="text" name="phone" required pattern="[\+]\d{12}" title="<fmt:message key="title.phone" />" placeholder="<fmt:message key="label.placeholder.dep_phone" /> ">
             </div>
             <div class = "image-content">
