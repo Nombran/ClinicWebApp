@@ -77,17 +77,18 @@ public class UserRepository extends AbstractRepository<User> {
         PreparedStatement statement = null;
         try {
             statement = connection.prepareStatement(sqlQuery);
-            ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()) {
-                long id = resultSet.getLong(UserAttribute.ID_ATTR);
-                String login = resultSet.getString(UserAttribute.LOGIN_ATTR);
-                String password = resultSet.getString(UserAttribute.PASSWORD_ATTR);
-                String email = resultSet.getString(UserAttribute.EMAIL_ATTR);
-                UserRole userRole = UserRole.valueOf(resultSet.getString(UserAttribute.ROLE_ATTR));
-                UserSatus userSatus = UserSatus.valueOf(resultSet.getString(UserAttribute.STATUS_ATTR));
-                User user = new User(login,password,email,userRole,userSatus);
-                user.setId(id);
-                result.add(user);
+            try(ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    long id = resultSet.getLong(UserAttribute.ID_ATTR);
+                    String login = resultSet.getString(UserAttribute.LOGIN_ATTR);
+                    String password = resultSet.getString(UserAttribute.PASSWORD_ATTR);
+                    String email = resultSet.getString(UserAttribute.EMAIL_ATTR);
+                    UserRole userRole = UserRole.valueOf(resultSet.getString(UserAttribute.ROLE_ATTR));
+                    UserSatus userSatus = UserSatus.valueOf(resultSet.getString(UserAttribute.STATUS_ATTR));
+                    User user = new User(login, password, email, userRole, userSatus);
+                    user.setId(id);
+                    result.add(user);
+                }
             }
         } catch (SQLException e) {
             throw new RepositoryException("Error in query",e);

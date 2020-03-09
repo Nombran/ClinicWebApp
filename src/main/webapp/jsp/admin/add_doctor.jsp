@@ -40,7 +40,7 @@
                 <input type="text" name="name" pattern="[A-Za-zА-Яа-я]{2,20}" required title="<fmt:message key="title.name" />" placeholder=<fmt:message key="label.name" /> />
                 <input type="text" name="surname" pattern="[A-Za-zА-Яа-я]{2,20}" required title="<fmt:message key="title.name" />" placeholder=<fmt:message key="label.surname" /> />
                 <input type="text" name="lastname" pattern="[A-Za-zА-Яа-я]{2,20}" required title="<fmt:message key="title.name" />" placeholder=<fmt:message key="label.lastName" /> />
-                <input type="text" required name="specialization" placeholder="Specialization" title="<fmt:message key="label.title.specialization" /> " pattern="[а-яёА-ЯЁ]{4,20}\s*[а-яёА-ЯЁ]{4,20}">
+                <input type="text" required name="specialization" placeholder="Specialization" title="<fmt:message key="label.title.specialization" /> " pattern="[а-яёА-ЯЁ]{4,20}\s*[-а-яёА-ЯЁ]{1,20}">
                 <input type="text" required name="category" placeholder="Category" pattern="[а-яёА-ЯЁ]{4,10}\s*[а-яёА-ЯЁ]{4,15}" title="<fmt:message key="label.title.category" /> ">
                 <select name="department_id" id="department-select" class="department-choose">
                     <c:forEach var="department" items="${departments}">

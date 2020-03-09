@@ -71,16 +71,17 @@ public class DepartmentRepository extends AbstractRepository<Department> {
         PreparedStatement statement = null;
         try {
             statement = connection.prepareStatement(sqlQuery);
-            ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()) {
-                long id = resultSet.getLong(DepartmentAttribute.ID_ATTR);
-                String name = resultSet.getString(DepartmentAttribute.NAME_ATTR);
-                String description = resultSet.getString(DepartmentAttribute.DESCRIPTION_ATTR);
-                String phone = resultSet.getString(DepartmentAttribute.PHONE_ATTR);
-                String imagePath = resultSet.getString(DepartmentAttribute.IMAGE_PATH_ATTR);
-                Department department = new Department(name, description, phone, imagePath);
-                department.setId(id);
-                result.add(department);
+            try(ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    long id = resultSet.getLong(DepartmentAttribute.ID_ATTR);
+                    String name = resultSet.getString(DepartmentAttribute.NAME_ATTR);
+                    String description = resultSet.getString(DepartmentAttribute.DESCRIPTION_ATTR);
+                    String phone = resultSet.getString(DepartmentAttribute.PHONE_ATTR);
+                    String imagePath = resultSet.getString(DepartmentAttribute.IMAGE_PATH_ATTR);
+                    Department department = new Department(name, description, phone, imagePath);
+                    department.setId(id);
+                    result.add(department);
+                }
             }
         } catch (SQLException e) {
             throw new RepositoryException("Error in query",e);

@@ -7,7 +7,7 @@ import by.epam.clinic.core.repository.impl.RepositoryException;
 import by.epam.clinic.core.repository.impl.UserRepository;
 import by.epam.clinic.core.service.UserService;
 import by.epam.clinic.core.specification.impl.FindUserByDoctorIdSpeification;
-import by.epam.clinic.core.specification.impl.FindUserByLoginSpecification;
+import by.epam.clinic.core.specification.impl.FindUserByLoginAndPasswordSpecification;
 import by.epam.clinic.util.TextEncryptor;
 import by.epam.clinic.util.TextEncryptorException;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
         try {
             transactionManager.init();
             String encryptedPassword = TextEncryptor.encrypt(password);
-            FindUserByLoginSpecification specification = new FindUserByLoginSpecification(login, encryptedPassword);
+            FindUserByLoginAndPasswordSpecification specification = new FindUserByLoginAndPasswordSpecification(login, encryptedPassword);
             UserRepository repository = new UserRepository();
             transactionManager.setConnectionToRepository(repository);
             List<User> queryResult = repository.query(specification);

@@ -58,7 +58,8 @@ public class AddDoctorCommand implements AdminCommand {
         if (requestContent.containsParameters(UserAttribute.LOGIN_ATTR, UserAttribute.EMAIL_ATTR,
                 UserAttribute.PASSWORD_ATTR, DoctorAttribute.NAME_ATTR, DoctorAttribute.LASTNAME_ATTR,
                 DoctorAttribute.SURNAME_ATTR, DoctorAttribute.SPECIALIZATION_ATTR, DoctorAttribute.CATEGORY_ATTR,
-                DoctorAttribute.DEPARTMENT_ID) && requestContent.getPart(DepartmentAttribute.IMAGE_ATTR) != null) {
+                DoctorAttribute.DEPARTMENT_ID) &&
+                requestContent.getPart(DepartmentAttribute.IMAGE_ATTR) != null) {
             String login = requestContent.getRequestParameter(UserAttribute.LOGIN_ATTR);
             String email = requestContent.getRequestParameter(UserAttribute.EMAIL_ATTR);
             String password = requestContent.getRequestParameter(UserAttribute.PASSWORD_ATTR);
@@ -80,12 +81,16 @@ public class AddDoctorCommand implements AdminCommand {
             String fileName = image.getSubmittedFileName();
             String applicationDir = requestContent.getServletContextPath();
             if (UserDataValidator.isDataValid(login, password, email) &&
-                    DoctorDataValidator.isDataValid(name, surname, lastname, specialization, category, fileName)) {
+                    DoctorDataValidator.isDataValid(name, surname,
+                            lastname, specialization, category, fileName)) {
                 User user = new User(login, password, email, UserRole.DOCTOR, UserSatus.ACTIVE);
                 Doctor doctor = new Doctor(name, surname, lastname, specialization, category, departmentId);
                 try {
-                    doctorService.createDoctor(user, doctor, applicationDir, image);
-                    requestContent.setSessionAttribute(RESULT_ATTR, SUCCESS_MESSAGE_PROPERTY);
+                    if(doctorService.createDoctor(user, doctor, applicationDir, image)) {
+                        requestContent.setSessionAttribute(RESULT_ATTR, SUCCESS_MESSAGE_PROPERTY);
+                    } else {
+                        requestContent.setSessionAttribute(RESULT_ATTR, LOGIN_EXISTS_PROPERTY);
+                    }
                 } catch (ServiceException e) {
                     logger.error(e);
                     if (REPOSITORY_MESSAGE.equals(e.getMessage())) {

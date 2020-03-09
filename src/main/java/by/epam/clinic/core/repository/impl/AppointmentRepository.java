@@ -98,19 +98,20 @@ public class AppointmentRepository extends AbstractRepository<Appointment> {
         PreparedStatement statement = null;
         try {
             statement = connection.prepareStatement(sqlQuery);
-            ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()) {
-                long id = resultSet.getLong(AppointmentAttribute.ID_ATTR);
-                long doctorId = resultSet.getLong(AppointmentAttribute.DOCTOR_ID_ATTR);
-                long customerId = resultSet.getLong(AppointmentAttribute.CUSTOMER_ID_ATTR);
-                long milli = resultSet.getLong(AppointmentAttribute.DATE_TIME_ATTR);
-                Instant instant = Instant.ofEpochMilli(milli);
-                ZonedDateTime zonedDateTime = instant.atZone(ZoneId.systemDefault());
-                LocalDateTime dateTime = zonedDateTime.toLocalDateTime();
-                String purpose = resultSet.getString(AppointmentAttribute.PURPOSE_ATTR);
-                Appointment appointment = new Appointment(doctorId,customerId,purpose,dateTime);
-                appointment.setId(id);
-                result.add(appointment);
+            try(ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    long id = resultSet.getLong(AppointmentAttribute.ID_ATTR);
+                    long doctorId = resultSet.getLong(AppointmentAttribute.DOCTOR_ID_ATTR);
+                    long customerId = resultSet.getLong(AppointmentAttribute.CUSTOMER_ID_ATTR);
+                    long milli = resultSet.getLong(AppointmentAttribute.DATE_TIME_ATTR);
+                    Instant instant = Instant.ofEpochMilli(milli);
+                    ZonedDateTime zonedDateTime = instant.atZone(ZoneId.systemDefault());
+                    LocalDateTime dateTime = zonedDateTime.toLocalDateTime();
+                    String purpose = resultSet.getString(AppointmentAttribute.PURPOSE_ATTR);
+                    Appointment appointment = new Appointment(doctorId, customerId, purpose, dateTime);
+                    appointment.setId(id);
+                    result.add(appointment);
+                }
             }
         } catch (SQLException e) {
             throw new RepositoryException("Error in query",e);

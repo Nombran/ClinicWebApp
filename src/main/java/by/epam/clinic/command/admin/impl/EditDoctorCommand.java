@@ -34,6 +34,8 @@ public class EditDoctorCommand implements AdminCommand {
 
     private static final String INCORRECT_DATA_PROPERTY = "massage.failed_incorrect_data";
 
+    private static final String LOGIN_EXISTS_PROPERTY = "message.failed_login_exists";
+
     private final static String SUCCESS_PROPERTY = "message.successful_edit_doc";
 
     private final static String FAILED_PROPERTY = "message.failed_edit_doc";
@@ -105,8 +107,11 @@ public class EditDoctorCommand implements AdminCommand {
                     doctor.setImagePath(fileName);
                 }
                 try {
-                    doctorService.updateDoctor(user, doctor, applicationDir, image);
-                    requestContent.setSessionAttribute(RESULT_ATTR, SUCCESS_PROPERTY);
+                    if(doctorService.updateDoctor(user, doctor, applicationDir, image)) {
+                        requestContent.setSessionAttribute(RESULT_ATTR, SUCCESS_PROPERTY);
+                    } else {
+                        requestContent.setSessionAttribute(RESULT_ATTR, LOGIN_EXISTS_PROPERTY);
+                    }
                 } catch (ServiceException e) {
                     logger.error(e);
                     requestContent.setSessionAttribute(RESULT_ATTR, FAILED_PROPERTY);

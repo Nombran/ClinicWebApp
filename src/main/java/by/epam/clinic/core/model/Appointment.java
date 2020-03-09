@@ -1,9 +1,10 @@
 package by.epam.clinic.core.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Appointment {
+public class Appointment  {
     private long id;
     private long doctorId;
     private long customerId;

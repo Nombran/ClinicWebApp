@@ -11,7 +11,7 @@ public class DoctorDataValidator {
 
     private static final String JPEG_EXTENSION = "jpeg";
 
-    private static final String SPECIALIZATION_PATTERN = "[-а-яёА-ЯЁ]{4,20}\\s*[а-яёА-ЯЁ]{4,20}";
+    private static final String SPECIALIZATION_PATTERN = "[а-яёА-ЯЁ]{4,20}\\s*[-а-яёА-ЯЁ]{1,20}";
 
     private static final String CATEGORY_PATTERN = "[а-яёА-ЯЁ]{4,10}\\s*[а-яёА-ЯЁ]{4,15}";
 

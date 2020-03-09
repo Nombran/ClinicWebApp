@@ -69,20 +69,21 @@ public class CustomerRepository extends AbstractRepository<Customer> {
         try {
             String sqlQuery = specification.toSqlQuery();
             statement = connection.prepareStatement(sqlQuery);
-            ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()) {
-                long id = resultSet.getLong(CustomerAttribute.ID_ATTR);
-                String name = resultSet.getString(CustomerAttribute.NAME_ATTR);
-                String surname = resultSet.getString(CustomerAttribute.SURNAME_ATTR);
-                String lastname = resultSet.getString(CustomerAttribute.LASTNAME_ATTR);
-                long birthdayFromDb = resultSet.getLong(CustomerAttribute.BIRTHDAY);
-                LocalDate birthday = LocalDate.ofEpochDay(birthdayFromDb);
-                String phone = resultSet.getString(CustomerAttribute.PHONE);
-                long userId = resultSet.getLong(CustomerAttribute.USER_ID);
-                Customer customer = new Customer(name,surname,lastname,birthday,phone);
-                customer.setUserId(userId);
-                customer.setId(id);
-                result.add(customer);
+            try(ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    long id = resultSet.getLong(CustomerAttribute.ID_ATTR);
+                    String name = resultSet.getString(CustomerAttribute.NAME_ATTR);
+                    String surname = resultSet.getString(CustomerAttribute.SURNAME_ATTR);
+                    String lastname = resultSet.getString(CustomerAttribute.LASTNAME_ATTR);
+                    long birthdayFromDb = resultSet.getLong(CustomerAttribute.BIRTHDAY);
+                    LocalDate birthday = LocalDate.ofEpochDay(birthdayFromDb);
+                    String phone = resultSet.getString(CustomerAttribute.PHONE);
+                    long userId = resultSet.getLong(CustomerAttribute.USER_ID);
+                    Customer customer = new Customer(name, surname, lastname, birthday, phone);
+                    customer.setUserId(userId);
+                    customer.setId(id);
+                    result.add(customer);
+                }
             }
         } catch (SQLException e) {
             throw new RepositoryException("Error in query",e);

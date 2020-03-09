@@ -21,9 +21,10 @@ public interface DoctorService {
      * @param doctor             represents doctor personal info.
      * @param servletContextPath the servlet context path.
      * @param imageFile          the image file.
+     * @return the result of creating.
      * @throws ServiceException if an error occurs while creating a doctor.
      */
-    void createDoctor(User user, Doctor doctor, String servletContextPath, Part imageFile) throws ServiceException;
+    boolean createDoctor(User user, Doctor doctor, String servletContextPath, Part imageFile) throws ServiceException;
 
     /**
      * Method defines logic of getting all doctors by their working
@@ -77,8 +78,9 @@ public interface DoctorService {
      * @param doctor             the doctor.
      * @param servletContextPath the servlet context path.
      * @param imageFile          the image file.
+     * @return the result of updating.
      * @throws ServiceException if error occurs while updating doctor.
      */
-    void updateDoctor(User user, Doctor doctor, String servletContextPath, Part imageFile)
+    boolean updateDoctor(User user, Doctor doctor, String servletContextPath, Part imageFile)
             throws ServiceException;
 }

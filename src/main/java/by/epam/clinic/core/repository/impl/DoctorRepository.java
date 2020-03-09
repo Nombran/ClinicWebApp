@@ -74,20 +74,21 @@ public class DoctorRepository extends AbstractRepository<Doctor> {
         PreparedStatement statement = null;
         try {
             statement = connection.prepareStatement(sqlQuery);
-            ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()) {
-                long id = resultSet.getLong(DoctorAttribute.ID_ATTR);
-                String name = resultSet.getString(DoctorAttribute.NAME_ATTR);
-                String lastname = resultSet.getString(DoctorAttribute.LASTNAME_ATTR);
-                String surname = resultSet.getString(DoctorAttribute.SURNAME_ATTR);
-                long userId = resultSet.getLong(DoctorAttribute.USER_ID);
-                String specialization = resultSet.getString(DoctorAttribute.SPECIALIZATION_ATTR);
-                String category = resultSet.getString(DoctorAttribute.CATEGORY_ATTR);
-                long departmentId = resultSet.getLong(DoctorAttribute.DEPARTMENT_ID);
-                String imagePath = resultSet.getString(DoctorAttribute.IMAGE_PATH);
-                Doctor doctor = new Doctor(id, name, surname, lastname, specialization,
-                        category, userId, departmentId, imagePath);
-                result.add(doctor);
+            try(ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    long id = resultSet.getLong(DoctorAttribute.ID_ATTR);
+                    String name = resultSet.getString(DoctorAttribute.NAME_ATTR);
+                    String lastname = resultSet.getString(DoctorAttribute.LASTNAME_ATTR);
+                    String surname = resultSet.getString(DoctorAttribute.SURNAME_ATTR);
+                    long userId = resultSet.getLong(DoctorAttribute.USER_ID);
+                    String specialization = resultSet.getString(DoctorAttribute.SPECIALIZATION_ATTR);
+                    String category = resultSet.getString(DoctorAttribute.CATEGORY_ATTR);
+                    long departmentId = resultSet.getLong(DoctorAttribute.DEPARTMENT_ID);
+                    String imagePath = resultSet.getString(DoctorAttribute.IMAGE_PATH);
+                    Doctor doctor = new Doctor(id, name, surname, lastname, specialization,
+                            category, userId, departmentId, imagePath);
+                    result.add(doctor);
+                }
             }
         } catch (SQLException e) {
            throw new RepositoryException("Error in query",e);

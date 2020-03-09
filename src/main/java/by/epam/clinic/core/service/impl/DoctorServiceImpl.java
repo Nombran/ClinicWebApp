@@ -25,7 +25,7 @@ public class DoctorServiceImpl implements DoctorService {
 
     private static final String UPLOAD_DIR_PATH = "/img/doctors";
 
-    public void createDoctor(User user, Doctor doctor, String servletContextPath, Part imageFile) throws ServiceException {
+    public boolean createDoctor(User user, Doctor doctor, String servletContextPath, Part imageFile) throws ServiceException {
         String uploadDir = servletContextPath + UPLOAD_DIR_PATH;
         ImageUploader uploader = new ImageUploader(uploadDir);
         TransactionManager transactionManager = new TransactionManager();
@@ -37,6 +37,13 @@ public class DoctorServiceImpl implements DoctorService {
             DoctorRepository doctorRepository = new DoctorRepository();
             transactionManager.beginTransaction();
             transactionManager.setConnectionToRepository(userRepository, doctorRepository);
+            FindUserByLoginSpecification specification =
+                    new FindUserByLoginSpecification(user.getLogin());
+            List<User> users = userRepository.query(specification);
+            if(users.size() != 0) {
+                transactionManager.rollbackTransaction();
+                return false;
+            }
             userRepository.add(user);
             doctor.setUserId(user.getId());
             doctor.setImagePath(dbFilePath);
@@ -58,7 +65,7 @@ public class DoctorServiceImpl implements DoctorService {
                 logger.error("Error in releasing connection", e);
             }
         }
-
+        return true;
     }
 
     public List<Doctor> getDoctorsByDepartmentId(long id) throws ServiceException {
@@ -214,7 +221,7 @@ public class DoctorServiceImpl implements DoctorService {
         }
     }
 
-    public void updateDoctor(User user, Doctor doctor, String servletContextPath, Part imageFile) throws ServiceException {
+    public boolean updateDoctor(User user, Doctor doctor, String servletContextPath, Part imageFile) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         String uploadDir = servletContextPath + UPLOAD_DIR_PATH;
         try {
@@ -223,6 +230,16 @@ public class DoctorServiceImpl implements DoctorService {
             DoctorRepository repository = new DoctorRepository();
             transactionManager.setConnectionToRepository(repository, userRepository);
             transactionManager.beginTransaction();
+            FindUserByLoginSpecification specification =
+                    new FindUserByLoginSpecification(user.getLogin());
+            List<User> users = userRepository.query(specification);
+            if(users.size() != 0){
+                User userWithSuchLogin = users.get(0);
+                if(userWithSuchLogin.getId() != user.getId()) {
+                    transactionManager.rollbackTransaction();
+                    return false;
+                }
+            }
             userRepository.update(user);
             if (doctor.getImagePath() != null) {
                 repository.update(doctor);
@@ -253,5 +270,6 @@ public class DoctorServiceImpl implements DoctorService {
                 logger.error("Error in releasing connection", e);
             }
         }
+        return true;
     }
 }
